@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Aru Chat Client</title>
+		<link rel = "stylesheet" type = "text/css" href = "css/chat-dark.css" />
+		<script src="js/anim.js"></script>
+	</head>
+	<body>
+		<div>
+			<div class="chat-name">Aru Chat Client</div>
+			<div class="chat-info">Connected to 25.64.156.12</div>
+			<div class="app-controls">
+				<div class="app-user">User</div>
+				<img src="assets/settings.svg">
+				<img src="assets/window-minimize.svg">
+				<img src="assets/window-maximize.svg">
+				<img src="assets/window-close.svg">
+			</div>
+			<div class="chat-channels">
+				<span class="chat-channel" selected=true>#general</span>
+				<span class="chat-channel" selected=false>#dev</span>
+				<span class="chat-channel" selected=false>#shitposting</span>
+			</div>
+			<div class="chat-container" id="chat">
+				<div class="chat-message">
+					<span class="chat-msg-username">prefetcher</span> <span class="chat-msg-time">Today at 17:33</span><br>
+					thanks, anon e
+				</div>
+				<hr>
+				<div class="chat-message">
+					<span class="chat-msg-username">Anon E</span> <span class="chat-msg-time">Today at 17:33</span><br>
+					what
+				</div>
+				<hr>
+				<div class="chat-message">
+					<span class="chat-msg-username">prefetcher</span> <span class="chat-msg-time">Today at 17:33</span><br>
+					:(
+				</div>
+				<hr>
+			</div>
+			<div class="chat-online" id="online">
+				<div class="chat-online-username">
+					prefetcher
+				</div>
+				<hr>
+				<div class="chat-online-username">
+					Anon E<span class="chat-online-typing">&nbsp;&nbsp;is typing...</span>
+				</div>
+				<hr>
+				<div class="chat-online-username">
+					User
+				</div>
+				<hr>
+			</div>
+			<div class="option-menu">
+			</div>
+			<input id="chat-input" placeholder="Message #general">
+		</div>
+		<div id="blurfilter"></div>
+		<div id="ip-nick">
+			<div class="ip-nick-container" id="diagcontainer">
+				<span class="title">Aru</span><br>
+				<span class="ip-nick-label">Nickname</span><br>
+				<input class="ip-nick-input" id="nick"><br>
+				<span class="ip-nick-label">IP</span><br>
+				<input class="ip-nick-input" id="ip" value="37.233.101.52:57"><br>
+				<button id="connect" onclick="Aru.hideIpNick()">Connect</button>
+			</div>
+		</div>
+	</body>
+</html>
