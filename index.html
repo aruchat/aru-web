@@ -5,11 +5,74 @@
 		<title>Aru Chat Client</title>
 		<link rel = "stylesheet" type = "text/css" href = "css/chat-dark.css" />
 		<script src="js/anim.js"></script>
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/socket.io.js"></script>
+		<script>
+				$(function(){
+					$('#connect').click(function(){
+						var channels;
+						socket = io("http://" + $('#ip').val());
+						console.log(socket);
+						socket.emit('nickname', $('#nick').val())
+						socket.emit('userlist','');
+						socket.emit('channels','');
+						$(".chat-info").text("Connected to: " + $('#ip').val());
+						$(".app-user").text($('#nick').val());
+
+						console.log($('#ip').val());
+
+						socket.on('userlist', function(msg){
+							console.log("userlist");
+							Aru.deleteUsers();
+							console.log(msg);
+							var parsed = JSON.parse(msg);
+							parsed["users"].forEach(function(entry){
+								Aru.addUser(entry["nick"], entry["color"]);
+							});
+						});
+
+						socket.on('channels', function(msg){
+							if(!channels) {
+								console.log("channels");
+								console.log(msg);
+								var parsed = JSON.parse(msg);
+								parsed["channels"].forEach(function(entry){
+									Aru.addChannel(entry["title"]);
+								});
+								$(".chat-container-invisible").first().toggleClass('chat-container-invisible chat-container');
+								document.getElementsByClassName("chat-channel")[0].setAttribute("selected", "true");
+								channels = true;
+							}
+						});
+
+						$('#chat-input').keydown(function (e){
+    					if(e.keyCode == 13){
+								var jsonsubmit = '{ "user":"' + $('#nick').val() + '", "channel":"' + $('.chat-container').attr('id') + '", "message":"' + $('#chat-input').val() + '"}';
+								socket.emit('message', jsonsubmit);
+								$('#chat-input').val('');
+    					}
+						});
+
+						socket.on('message', function(msg){
+							if(channels)
+							{
+								try {
+									var json = JSON.parse(msg);
+									Aru.addMessage(json["user"] + " ", json["message"], "#ffffff", json["channel"]);
+								}
+								catch(err) {
+									Aru.addMessage("SERVER ", msg, "#ED145B", $('.chat-container').attr('id'));
+								}
+							}
+						});
+				});
+			});
+		</script>
 	</head>
 	<body>
 		<div>
 			<div class="chat-name">Aru Chat Client</div>
-			<div class="chat-info">Connected to 25.64.156.12</div>
+			<div class="chat-info">Disconnected</div>
 			<div class="app-controls">
 				<div class="app-user">User</div>
 				<img src="assets/settings.svg">
@@ -18,59 +81,10 @@
 				<img src="assets/window-close.svg">
 			</div>
 			<div class="chat-channels" id="channels">
-				<span class="chat-channel" selected=true>#general</span>
-				<span class="chat-channel" selected=false>#dev</span>
-				<span class="chat-channel" selected=false>#shitposting</span>
 			</div>
 			<div id="channel-container">
-				<div class="chat-container" id="chat">
-					<div class="chat-message">
-						<span class="chat-msg-username">prefetcher</span> <span class="chat-msg-time">Today at 17:33</span><br>
-						thanks, anon e
-					</div>
-					<hr>
-					<div class="chat-message">
-						<span class="chat-msg-username">Anon E</span> <span class="chat-msg-time">Today at 17:33</span><br>
-						what
-					</div>
-					<hr>
-					<div class="chat-message">
-						<span class="chat-msg-username">prefetcher</span> <span class="chat-msg-time">Today at 17:33</span><br>
-						:(
-					</div>
-					<hr>
-				</div>
-				<div class="chat-container-invisible" id="chat">
-					<div class="chat-message">
-						<span class="chat-msg-username">prefetcher</span> <span class="chat-msg-time">Today at 17:33</span><br>
-						thanks, anon e
-					</div>
-					<hr>
-					<div class="chat-message">
-						<span class="chat-msg-username">Anon E</span> <span class="chat-msg-time">Today at 17:33</span><br>
-						what
-					</div>
-					<hr>
-					<div class="chat-message">
-						<span class="chat-msg-username">prefetcher</span> <span class="chat-msg-time">Today at 17:33</span><br>
-						:(
-					</div>
-					<hr>
-				</div>
 			</div>
 			<div class="chat-online" id="online">
-				<div class="chat-online-username">
-					prefetcher
-				</div>
-				<hr>
-				<div class="chat-online-username">
-					Anon E<span class="chat-online-typing">&nbsp;&nbsp;is typing...</span>
-				</div>
-				<hr>
-				<div class="chat-online-username">
-					User
-				</div>
-				<hr>
 			</div>
 			<div class="option-menu">
 			</div>

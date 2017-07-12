@@ -37,10 +37,6 @@ Aru.postMessage = function() {
 	//TODO your code here
 }
 
-Aru.login = function() {
-	//TODO your code here
-}
-
 Aru.hideIpNick = function() {
 	//get our elements to do the stuff to
 	var diag = document.getElementById("ip-nick");
@@ -75,16 +71,6 @@ Aru.addUser = function(name, color) { //Are we gonna use color?
 	userlist.appendChild(hr)
 }
 
-Aru.removeUser = function(name) {
-	//query our custom attribute
-	var div = document.querySelector("div.chat-online-username[u="+name+"]")[0];
-	var hr = document.querySelector("hr[u="+name+"]")[0];
-	var userlist = document.getElementById("online");
-	//remove
-	userlist.removeChild(div);
-	userlist.removeChild(hr);
-}
-
 Aru.addMessage = function(name, msg, color, channel) {
 	color = color || "#E7E7E9"; //color if we use it
 	var div = document.createElement("DIV");
@@ -115,10 +101,21 @@ Aru.addChannel = function(name) {
 	var channel = document.createElement("DIV");
 	var namechannel = document.createElement("span");
 	var att = document.createAttribute("selected");
+	var id = document.createAttribute("id");
 	att.value = "false";
+	id.value = name;
 	namechannel.classList.add("chat-channel");
-	namechannel.setAttributeNode(att)
+	namechannel.setAttributeNode(att);
+	channel.setAttributeNode(id);
+	namechannel.appendChild(document.createTextNode("#" + name + " "));
 	channel.classList.add("chat-container-invisible");
 	container.appendChild(channel);
 	namecontainer.appendChild(namechannel);
+}
+
+Aru.deleteUsers = function() {
+	var node = document.getElementById("online");
+	while (node.hasChildNodes()) {
+    node.removeChild(node.lastChild);
+	}
 }
