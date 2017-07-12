@@ -1,34 +1,34 @@
 /*
-                                                                     /$$       
-                                                                    | $$       
- /$$   /$$  /$$$$$$$  /$$$$$$         /$$$$$$   /$$$$$$   /$$$$$$$ /$$$$$$     
-| $$  | $$ /$$_____/ /$$__  $$       /$$__  $$ /$$__  $$ /$$_____/|_  $$_/     
-| $$  | $$|  $$$$$$ | $$$$$$$$      | $$  \ $$| $$  \ $$|  $$$$$$   | $$       
-| $$  | $$ \____  $$| $$_____/      | $$  | $$| $$  | $$ \____  $$  | $$ /$$   
-|  $$$$$$/ /$$$$$$$/|  $$$$$$$      | $$$$$$$/|  $$$$$$/ /$$$$$$$/  |  $$$$/   
- \______/ |_______/  \_______/      | $$____/  \______/ |_______/    \___/     
-                                    | $$                                       
-                                    | $$                                       
-                                    |__/                                       
-                                                               /$$             
-                                                              | $$             
+                                                                     /$$
+                                                                    | $$
+ /$$   /$$  /$$$$$$$  /$$$$$$         /$$$$$$   /$$$$$$   /$$$$$$$ /$$$$$$
+| $$  | $$ /$$_____/ /$$__  $$       /$$__  $$ /$$__  $$ /$$_____/|_  $$_/
+| $$  | $$|  $$$$$$ | $$$$$$$$      | $$  \ $$| $$  \ $$|  $$$$$$   | $$
+| $$  | $$ \____  $$| $$_____/      | $$  | $$| $$  | $$ \____  $$  | $$ /$$
+|  $$$$$$/ /$$$$$$$/|  $$$$$$$      | $$$$$$$/|  $$$$$$/ /$$$$$$$/  |  $$$$/
+ \______/ |_______/  \_______/      | $$____/  \______/ |_______/    \___/
+                                    | $$
+                                    | $$
+                                    |__/
+                                                               /$$
+                                                              | $$
   /$$$$$$   /$$$$$$   /$$$$$$  /$$   /$$  /$$$$$$   /$$$$$$$ /$$$$$$   /$$$$$$$
  /$$__  $$ /$$__  $$ /$$__  $$| $$  | $$ /$$__  $$ /$$_____/|_  $$_/  /$$_____/
-| $$  \__/| $$$$$$$$| $$  \ $$| $$  | $$| $$$$$$$$|  $$$$$$   | $$   |  $$$$$$ 
+| $$  \__/| $$$$$$$$| $$  \ $$| $$  | $$| $$$$$$$$|  $$$$$$   | $$   |  $$$$$$
 | $$      | $$_____/| $$  | $$| $$  | $$| $$_____/ \____  $$  | $$ /$$\____  $$
 | $$      |  $$$$$$$|  $$$$$$$|  $$$$$$/|  $$$$$$$ /$$$$$$$/  |  $$$$//$$$$$$$/
-|__/       \_______/ \____  $$ \______/  \_______/|_______/    \___/ |_______/ 
-                          | $$                                                 
-                          | $$                                                 
-                          |__/                                                 
-                              /$$                 /$$                          
-                             | $$                | $$                          
-  /$$$$$$   /$$$$$$$ /$$$$$$$| $$$$$$$   /$$$$$$ | $$  /$$$$$$                 
- |____  $$ /$$_____//$$_____/| $$__  $$ /$$__  $$| $$ /$$__  $$                
-  /$$$$$$$|  $$$$$$|  $$$$$$ | $$  \ $$| $$  \ $$| $$| $$$$$$$$                
- /$$__  $$ \____  $$\____  $$| $$  | $$| $$  | $$| $$| $$_____/                
-|  $$$$$$$ /$$$$$$$//$$$$$$$/| $$  | $$|  $$$$$$/| $$|  $$$$$$$                
- \_______/|_______/|_______/ |__/  |__/ \______/ |__/ \_______/     
+|__/       \_______/ \____  $$ \______/  \_______/|_______/    \___/ |_______/
+                          | $$
+                          | $$
+                          |__/
+                              /$$                 /$$
+                             | $$                | $$
+  /$$$$$$   /$$$$$$$ /$$$$$$$| $$$$$$$   /$$$$$$ | $$  /$$$$$$
+ |____  $$ /$$_____//$$_____/| $$__  $$ /$$__  $$| $$ /$$__  $$
+  /$$$$$$$|  $$$$$$|  $$$$$$ | $$  \ $$| $$  \ $$| $$| $$$$$$$$
+ /$$__  $$ \____  $$\____  $$| $$  | $$| $$  | $$| $$| $$_____/
+|  $$$$$$$ /$$$$$$$//$$$$$$$/| $$  | $$|  $$$$$$/| $$|  $$$$$$$
+ \_______/|_______/|_______/ |__/  |__/ \______/ |__/ \_______/
 */
 //it isn't that hard
 var Aru = {}
@@ -85,12 +85,12 @@ Aru.removeUser = function(name) {
 	userlist.removeChild(hr);
 }
 
-Aru.addMessage = function(name, msg, color) {
+Aru.addMessage = function(name, msg, color, channel) {
 	color = color || "#E7E7E9"; //color if we use it
 	var div = document.createElement("DIV");
 	var span = document.createElement("SPAN");
 	var time = document.createElement("SPAN");
-	var divblock = document.getElementById("chat");
+	var divblock = document.getElementById(channel);
 	var shouldScroll = ((divblock.scrollTop + divblock.clientHeight + 50) > divblock.scrollHeight);
 	var date = new Date();
 	div.classList.add("chat-message");
@@ -107,4 +107,18 @@ Aru.addMessage = function(name, msg, color) {
 	divblock.appendChild(document.createElement("HR"));
 	if (shouldScroll)
 		divblock.scrollTop = divblock.scrollHeight - divblock.clientHeight;
+}
+
+Aru.addChannel = function(name) {
+	var container = document.getElementById("channel-container");
+	var namecontainer = document.getElementById("channels");
+	var channel = document.createElement("DIV");
+	var namechannel = document.createElement("span");
+	var att = document.createAttribute("selected");
+	att.value = "false";
+	namechannel.classList.add("chat-channel");
+	namechannel.setAttributeNode(att)
+	channel.classList.add("chat-container-invisible");
+	container.appendChild(channel);
+	namecontainer.appendChild(namechannel);
 }
