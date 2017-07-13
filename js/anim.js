@@ -84,7 +84,7 @@ Aru.addMessage = function(name, msg, color, channel) {
 	time.classList.add("chat-msg-time");
 	span.appendChild(document.createTextNode(name));
 	span.style.color = color;
-	time.appendChild(document.createTextNode("Today at "+date.getHours()+":"+date.getMinutes()));
+	time.appendChild(document.createTextNode("Today at " + (date.getHours()<10?'0':'') + date.getHours() + ":" + (date.getMinutes()<10?'0':'') + date.getMinutes()));
 	div.appendChild(span);
 	div.appendChild(time);
 	div.appendChild(document.createElement("BR"));
