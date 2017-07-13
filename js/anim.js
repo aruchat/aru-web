@@ -102,10 +102,16 @@ Aru.addChannel = function(name) {
 	var namechannel = document.createElement("span");
 	var att = document.createAttribute("selected");
 	var id = document.createAttribute("id");
+	var selectid = document.createAttribute("id");
+	var onclick = document.createAttribute("onClick");
 	att.value = "false";
 	id.value = name;
+	onclick.value = "Aru.changeChannel(this);";
+	selectid.value = "channel-" + name;
 	namechannel.classList.add("chat-channel");
 	namechannel.setAttributeNode(att);
+	namechannel.setAttributeNode(selectid);
+	namechannel.setAttributeNode(onclick);
 	channel.setAttributeNode(id);
 	namechannel.appendChild(document.createTextNode("#" + name + " "));
 	channel.classList.add("chat-container-invisible");
@@ -118,4 +124,15 @@ Aru.deleteUsers = function() {
 	while (node.hasChildNodes()) {
     node.removeChild(node.lastChild);
 	}
+}
+
+Aru.changeChannel = function(el) {
+	var changed = document.getElementById(el.getAttribute("id").replace("channel-", ""));
+	var current = document.querySelector(".chat-container");
+	document.querySelector("span[selected=true]").setAttribute("selected", "false");
+	current.classList.add("chat-container-invisible");
+	current.classList.remove("chat-container");
+	changed.classList.add("chat-container");
+	changed.classList.remove("chat-container-invisible");
+	el.setAttribute("selected", "true");
 }
