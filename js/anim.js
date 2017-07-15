@@ -129,10 +129,12 @@ Aru.deleteUsers = function() {
 Aru.changeChannel = function(el) {
 	var changed = document.getElementById(el.getAttribute("id").replace("channel-", ""));
 	var current = document.querySelector(".chat-container");
+	var input = document.getElementById("chat-input");
 	document.querySelector("span[selected=true]").setAttribute("selected", "false");
 	current.classList.add("chat-container-invisible");
 	current.classList.remove("chat-container");
 	changed.classList.add("chat-container");
 	changed.classList.remove("chat-container-invisible");
+	input.setAttribute("placeholder", "Message #"+el.getAttribute("id").replace("channel-", ""));
 	el.setAttribute("selected", "true");
 }
