@@ -1,8 +1,8 @@
 $(function(){
-	var urlargs = new URL(location.href).searchParams;
-	if (urlargs.get("ip") != undefined) {
-		$('#ip').val(urlargs.get("ip"));
-	}
+  var urlargs = new URL(location.href).searchParams;
+  if (urlargs.get("ip") != undefined) {
+    $('#ip').val(urlargs.get("ip"));
+  }
   $('#connect').click(function(){
     var channels;
     socket = io("http://" + $('#ip').val());
