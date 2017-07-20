@@ -33,6 +33,7 @@ $(function(){
         parsed["channels"].forEach(function(entry){
           Aru.addChannel(entry["title"]);
         });
+        Aru.setTitle($(".chat-container-invisible").first().attr('id'));
         $(".chat-container-invisible").first().toggleClass('chat-container-invisible chat-container');
         document.getElementsByClassName("chat-channel")[0].setAttribute("selected", "true");
         channels = true;
@@ -64,6 +65,7 @@ $(function(){
     });
 
     socket.on('server_name', function(msg){
+      Aru.serverName = msg;
       $('.chat-name').html(msg);
     });
 });

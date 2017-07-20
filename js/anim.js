@@ -32,10 +32,7 @@
 */
 //it isn't that hard
 var Aru = {}
-
-Aru.postMessage = function() {
-	//TODO your code here
-}
+Aru.serverName = "";
 
 Aru.hideIpNick = function() {
 	//get our elements to do the stuff to
@@ -137,4 +134,9 @@ Aru.changeChannel = function(el) {
 	changed.classList.remove("chat-container-invisible");
 	input.setAttribute("placeholder", "Message #"+el.getAttribute("id").replace("channel-", ""));
 	el.setAttribute("selected", "true");
+	Aru.setTitle(el.getAttribute("id").replace("channel-", ""));
+}
+
+Aru.setTitle = function(channel) {
+	document.title = "#" + channel + " in " + Aru.serverName + " - Aru";
 }
