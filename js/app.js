@@ -62,5 +62,9 @@ $(function(){
         }
       }
     });
+
+    socket.on('server_name', function(msg){
+      $('.chat-name').html(msg);
+    });
 });
 });
