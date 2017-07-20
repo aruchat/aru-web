@@ -64,20 +64,20 @@ body {
 }
 
 .app-controls > img {
-	width: 3vh;
-	height: 3vh;
+	width: 25px;
+	height: 25px;
 }
 
 .app-user {
 	width: 10vw;
-	font-size: 2.5vh;
+	font-size: 20px;
 	display: inline-block;
 	color: #4C4C66;
 	font-weight: normal;
 	font-family: 'Heebo', sans-serif;
 	position: fixed;
 	top: 0.9vh;
-	right: 16vh;
+	right: 125px;
 	text-align: right;
 }
 
