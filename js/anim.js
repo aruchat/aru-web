@@ -68,6 +68,10 @@ Aru.addUser = function(name, color) { //Are we gonna use color?
 	userlist.appendChild(hr)
 }
 
+function safe_tags(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') ;
+}
+
 Aru.addMessage = function(name, msg, color, channel) {
 	color = color || "#E7E7E9"; //color if we use it
 	var div = document.createElement("DIV");
@@ -85,7 +89,17 @@ Aru.addMessage = function(name, msg, color, channel) {
 	div.appendChild(span);
 	div.appendChild(time);
 	div.appendChild(document.createElement("BR"));
-	div.appendChild(document.createTextNode(msg));
+	//div.appendChild(document.createTextNode(msg));
+	var m = msg.split("\r\n");
+	if (m.length > 1) {
+		for (var i = 0; i < m.length; ++i) {
+			m[i] = safe_tags(m[i]);
+		}
+		var s = document.createElement("SPAN");
+		s.innerHTML = m.join("<br>");
+	} else {
+		div.appendChild(document.createTextNode(msg));
+	}
 	divblock.appendChild(div);
 	divblock.appendChild(document.createElement("HR"));
 	if (shouldScroll)
