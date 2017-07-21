@@ -59,7 +59,7 @@ $(function(){
           Aru.addMessage(json["user"] + " ", json["message"], "#ffffff", json["channel"]);
         }
         catch(err) {
-          Aru.addMessage("SERVER ", linkifyStr(msg), "#ED145B", $('.chat-container').attr('id'));
+          Aru.addMessage("SERVER ", msg, "#ED145B", $('.chat-container').attr('id'));
         }
       }
     });
