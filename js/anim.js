@@ -100,6 +100,7 @@ Aru.addMessage = function(name, msg, color, channel) {
 	} else {
 		div.appendChild(document.createTextNode(msg));
 	}
+	$(div).linkify();
 	divblock.appendChild(div);
 	divblock.appendChild(document.createElement("HR"));
 	if (shouldScroll)
