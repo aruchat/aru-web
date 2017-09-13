@@ -104,6 +104,7 @@ Aru.addMessage = function(name, msg, color, channel, lastuser) {
 		}
 		var s = document.createElement("SPAN");
 		s.innerHTML = m.join("<br>");
+		div.appendChild(s);
 	} else {
 		div.appendChild(document.createTextNode(msg));
 	}
