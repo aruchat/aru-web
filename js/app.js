@@ -5,6 +5,7 @@ $(function(){
   }
   $('#connect').click(function(){
     var channels;
+    var lastuser = "";
     socket = io("http://" + $('#ip').val());
     console.log(socket);
     socket.emit('nickname', $('#nick').val())
@@ -56,7 +57,8 @@ $(function(){
       {
         try {
           var json = JSON.parse(msg);
-          Aru.addMessage(json["user"] + " ", json["message"], "#ffffff", json["channel"]);
+          Aru.addMessage(json["user"] + " ", json["message"], "#ffffff", json["channel"], lastuser);
+          lastuser = json["user"];
         }
         catch(err) {
           Aru.addMessage("SERVER ", msg, "#ED145B", $('.chat-container').attr('id'));
@@ -67,6 +69,10 @@ $(function(){
     socket.on('server_name', function(msg){
       Aru.serverName = msg;
       $('.chat-name').html(msg);
+    });
+
+    socket.on('error', function (err) {
+      console.log(err);
     });
 });
 });
