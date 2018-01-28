@@ -1,78 +1,56 @@
-$(function(){
-  var urlargs = new URL(location.href).searchParams;
-  if (urlargs.get("ip") != undefined) {
-    $('#ip').val(urlargs.get("ip"));
-  }
-  $('#connect').click(function(){
-    var channels;
-    var lastuser = "";
-    socket = io("http://" + $('#ip').val());
-    console.log(socket);
-    socket.emit('nickname', $('#nick').val())
-    socket.emit('userlist','');
-    socket.emit('channels','');
-    $(".chat-info").text("Connected to: " + $('#ip').val());
-    $(".app-user").text($('#nick').val());
+var ws = null;
+var isFirstUserjoin = true;
+function beginConnection() {
+  ws = new WebSocket("ws://" + document.getElementById('ip').value + "/chat/" + document.getElementById('nick').value);
+  ws.binaryType = "arraybuffer";
 
-    console.log($('#ip').val());
+  ws.onopen = function() {
+    document.getElementById('chat-status').innerHTML = "Connected to " + document.getElementById('ip').value;
+    Aru.addChannel("general");
+    var request = {"type": "req", "req": "userlist"};
+    var request_framed = msgpack.encode(request);
+    ws.send(request_framed);
+  };
 
-    socket.on('userlist', function(msg){
-      console.log("userlist");
-      Aru.deleteUsers();
-      console.log(msg);
-      var parsed = JSON.parse(msg);
-      parsed["users"].forEach(function(entry){
-        Aru.addUser(entry["nick"], entry["color"]);
-      });
-    });
-
-    socket.on('channels', function(msg){
-      if(!channels) {
-        console.log("channels");
-        console.log(msg);
-        var parsed = JSON.parse(msg);
-        parsed["channels"].forEach(function(entry){
-          Aru.addChannel(entry["title"]);
-        });
-        Aru.setTitle($(".chat-container-invisible").first().attr('id'));
-        $(".chat-container-invisible").first().toggleClass('chat-container-invisible chat-container');
-        document.getElementsByClassName("chat-channel")[0].setAttribute("selected", "true");
-        channels = true;
-      }
-    });
-
-    $('#chat-input').keydown(function (e){
-      if(e.keyCode == 13){
-        var message = $('#chat-input').val();
-        message = message.replace(/\\/g, "\\\\");
-        message = message.replace(/"/g, '\\\"');
-        var jsonsubmit = '{ "user":"' + $('#nick').val() + '", "channel":"' + $('.chat-container').attr('id') + '", "message":"' + message + '"}';
-        socket.emit('message', jsonsubmit);
-        $('#chat-input').val('');
-      }
-    });
-
-    socket.on('message', function(msg){
-      if(channels)
-      {
-        try {
-          var json = JSON.parse(msg);
-          Aru.addMessage(json["user"] + " ", json["message"], "#ffffff", json["channel"], lastuser);
-          lastuser = json["user"];
+  ws.onmessage = function(msg) {
+    var frame = msgpack.decode(new Uint8Array(msg.data));
+    console.log(frame);
+    if (frame["type"] == "client") {
+      Aru.addMessage(frame["client"], frame["msg"], "#E7E7E9", "general", frame["avatar"]);
+    } else if (frame["type"] == "update") {
+      if (frame["update"] == "userlist") {
+        var userlist = frame["users"];
+        for(var i = 0; i < userlist.length; i++) {
+          Aru.addUser(userlist[i]["name"], userlist[i]["avatar"], userlist[i]["id"], "#E7E7E9");
         }
-        catch(err) {
-          Aru.addMessage("SERVER ", msg, "#ED145B", $('.chat-container').attr('id'));
+      } else if (frame["update"] == "user-leave") {
+        document.getElementById("online").removeChild(document.getElementById('user-' + frame["id"].toString()));
+      } else if (frame["update"] == "user-join") {
+        if (isFirstUserjoin) {
+          isFirstUserjoin = false; // Workaround since first user-join event (you joining) is also sent to you
+        } else {
+          Aru.addUser(frame["name"], frame["avatar"], frame["id"], "#E7E7E9");
         }
+      } else if (frame["update"] == "user-avatar") {
+        document.getElementById("img-" + frame["id"].toString()).src = frame["avatar"];
       }
-    });
+    } else {
+      Aru.addMessage("SERVER", frame["msg"], "#ED145B", "general", "");
+    }
+  };
 
-    socket.on('server_name', function(msg){
-      Aru.serverName = msg;
-      $('.chat-name').html(msg);
-    });
+  document.onkeypress = function(event) {
+    if (event.which == 13 || event.keyCode == 13) {
+      sendMessage();
+    }
+    return true;
+  };
+}
 
-    socket.on('error', function (err) {
-      console.log(err);
-    });
-});
-});
+function sendMessage() {
+  var input = document.getElementById('chat-input');
+  var payload = {"type": "msg", "msg": input.value, "markdown": true};
+  var framed = msgpack.encode(payload);
+  ws.send(framed);
+  input.value = '';
+}

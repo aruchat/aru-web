@@ -50,53 +50,66 @@ Aru.hideIpNick = function() {
 	setTimeout(function(){
 		bg.classList.add('hidden');
 		diag.classList.add('hidden');
-	}, 100)
+	}, 100);
+	beginConnection();
 }
 
-Aru.addUser = function(name, color) { //Are we gonna use color?
+Aru.addUser = function(name, avatar, id, color) { //Are we gonna use color?
 	color = color || "#E7E7E9"; //color if we use it
 	//make our elements and add a nice attribute to them to find them later
 	var div = document.createElement("DIV");
+	var img = document.createElement("IMG");
 	div.classList.add("chat-online-username");
+	img.classList.add("avatar-small");
+	img.src = avatar
+	img.id = "img-" + id.toString();
+	div.id = "user-" + id.toString();
 	div.style.color = color;
-	div.appendChild(document.createTextNode(name))
 	var hr = document.createElement("HR");
 	div.setAttribute("u", name);
 	hr.setAttribute("u", name);
+	div.appendChild(img);
+	div.appendChild(document.createTextNode(name))
+	div.appendChild(hr)
 	var userlist = document.getElementById("online");
 	userlist.appendChild(div)
-	userlist.appendChild(hr)
+	
 }
 
 function safe_tags(str) {
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') ;
 }
 
-Aru.addMessage = function(name, msg, color, channel, lastuser) {
+Aru.addMessage = function(name, msg, color, channel, avatar_src) {
 	color = color || "#E7E7E9"; //color if we use it
 	var div = document.createElement("DIV");
 	var span = document.createElement("SPAN");
 	var time = document.createElement("SPAN");
+	var avatar = document.createElement("IMG");
 	var divblock = document.getElementById(channel);
 	var shouldScroll = ((divblock.scrollTop + divblock.clientHeight + 50) > divblock.scrollHeight);
 	var date = new Date();
 	div.classList.add("chat-message");
 	span.classList.add("chat-msg-username");
 	time.classList.add("chat-msg-time");
-	span.appendChild(document.createTextNode(name));
+	avatar.classList.add("avatar");
+	span.innerHTML = name + " ";
 	span.style.color = color;
 	time.appendChild(document.createTextNode("Today at " + (date.getHours()<10?'0':'') + date.getHours() + ":" + (date.getMinutes()<10?'0':'') + date.getMinutes()));
-	div.appendChild(document.createTextNode(msg));
+	if (avatar_src == "") {
+
+	} else {
+		avatar.src = avatar_src;
+		divblock.appendChild(avatar);
+	}
+	div.appendChild(span);
+	div.appendChild(time);
+	div.appendChild(document.createElement("BR"));
 	var m = msg.split("\r\n");
 	if (m.length > 1) {
-		for (var i = 0; i < m.length; ++i) {
-			m[i] = safe_tags(m[i]);
-		}
-		var s = document.createElement("SPAN");
-		s.innerHTML = m.join("<br>");
-		div.appendChild(s);
+		div.innerHTML += m.join("<br>");;
 	} else {
-		div.appendChild(document.createTextNode(msg));
+		div.innerHTML += msg;
 	}
 	divblock.appendChild(div);
 	var hr = document.createElement("HR");
@@ -125,7 +138,7 @@ Aru.addChannel = function(name) {
 	namechannel.setAttributeNode(onclick);
 	channel.setAttributeNode(id);
 	namechannel.appendChild(document.createTextNode("#" + name + " "));
-	channel.classList.add("chat-container-invisible");
+	channel.classList.add("chat-container");
 	container.appendChild(channel);
 	namecontainer.appendChild(namechannel);
 }
@@ -133,7 +146,7 @@ Aru.addChannel = function(name) {
 Aru.deleteUsers = function() {
 	var node = document.getElementById("online");
 	while (node.hasChildNodes()) {
-    node.removeChild(node.lastChild);
+    	node.removeChild(node.lastChild);
 	}
 }
 

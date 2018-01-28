@@ -100,9 +100,8 @@ body {
 	font-family: 'Roboto', sans-serif;
 	color: #E7E7E9;
 	font-size: 1.5vh;
-	margin-left: 1vh;
 	padding-bottom: 1vh;
-
+	display: inline-block;
 }
 .chat-msg-time {
 	color: #515161;
@@ -115,7 +114,6 @@ body {
 	text-decoration:  none;
 	padding-bottom: 0.5vh;
 	font-weight: 200;
-	margin-left: -1vh;
 }
 
 .chat-online-username {
@@ -294,4 +292,38 @@ hr {
 	position: fixed;
 	top: 5vh;
 	right: 4vw;
+}
+
+p {
+	margin-top: 3px;
+	margin-bottom: 2px;
+}
+.avatar {
+	max-width: 3.5vh;
+	max-height: 3.5vh;
+	width: auto;
+	height: auto;
+	margin-right: 10px;
+	padding-top: 2px;
+	vertical-align: top;
+	display: inline-block;
+	border-radius: 50%;
+}
+.avatar-small {
+	max-width: 2.5vh;
+	max-height: 2.5vh;
+	width: auto;
+	height: auto;
+	display: inline-block;
+	border-radius: 50%;
+	vertical-align: top;
+	margin-right: 4px;
+	margin-bottom: 7px;
+}
+
+img {
+	max-width: 350px;
+	max-height: 500px;
+	width: auto;
+	height: auto;
 }
