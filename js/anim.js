@@ -86,17 +86,7 @@ Aru.addMessage = function(name, msg, color, channel, lastuser) {
 	span.appendChild(document.createTextNode(name));
 	span.style.color = color;
 	time.appendChild(document.createTextNode("Today at " + (date.getHours()<10?'0':'') + date.getHours() + ":" + (date.getMinutes()<10?'0':'') + date.getMinutes()));
-	if(name.slice(0,-1) == lastuser) {
-		var element = document.getElementsByClassName("hr-placeholder");
-		element = element[element.length-1];
-		element.remove();
-	}
-	else {
-		div.appendChild(span);
-		div.appendChild(time);
-		div.appendChild(document.createElement("BR"));
-	}
-	//div.appendChild(document.createTextNode(msg));
+	div.appendChild(document.createTextNode(msg));
 	var m = msg.split("\r\n");
 	if (m.length > 1) {
 		for (var i = 0; i < m.length; ++i) {
@@ -108,7 +98,6 @@ Aru.addMessage = function(name, msg, color, channel, lastuser) {
 	} else {
 		div.appendChild(document.createTextNode(msg));
 	}
-	$(div).linkify();
 	divblock.appendChild(div);
 	var hr = document.createElement("HR");
 	hr.classList.add("hr-placeholder");
