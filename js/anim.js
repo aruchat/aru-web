@@ -59,17 +59,20 @@ Aru.addUser = function(name, avatar, id, color) { //Are we gonna use color?
 	//make our elements and add a nice attribute to them to find them later
 	var div = document.createElement("DIV");
 	var img = document.createElement("IMG");
+	var span = document.createElement("SPAN");
 	div.classList.add("chat-online-username");
 	img.classList.add("avatar-small");
 	img.src = avatar
 	img.id = "img-" + id.toString();
 	div.id = "user-" + id.toString();
+	span.id = "name-" + id.toString();
+	span.innerHTML = name
 	div.style.color = color;
 	var hr = document.createElement("HR");
 	div.setAttribute("u", name);
 	hr.setAttribute("u", name);
 	div.appendChild(img);
-	div.appendChild(document.createTextNode(name))
+	div.appendChild(span)
 	div.appendChild(hr)
 	var userlist = document.getElementById("online");
 	userlist.appendChild(div)

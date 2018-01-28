@@ -33,6 +33,8 @@ function beginConnection() {
         }
       } else if (frame["update"] == "user-avatar") {
         document.getElementById("img-" + frame["id"].toString()).src = frame["avatar"];
+      } else if (frame["update"] == "user-name") {
+        document.getElementById("name-" + frame["id"].toString()).innerHTML = frame["name"];
       }
     } else {
       Aru.addMessage("SERVER", frame["msg"], "#ED145B", "general", "");
