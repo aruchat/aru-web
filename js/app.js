@@ -27,7 +27,7 @@ function beginConnection() {
       if (frame["update"] == "userlist") {
         var userlist = frame["users"];
         for(var i = 0; i < userlist.length; i++) {
-          Aru.addUser(userlist[i]["name"] + "#" + userlist[i]["discriminator"], userlist[i]["avatar"], userlist[i]["id"], "#E7E7E9");
+          Aru.addUser(userlist[i]["name"], userlist[i]["discriminator"], userlist[i]["avatar"], userlist[i]["id"], "#E7E7E9");
         }
       } else if (frame["update"] == "user-leave") {
         document.getElementById("online").removeChild(document.getElementById('user-' + frame["id"].toString()));
@@ -37,13 +37,13 @@ function beginConnection() {
           userInfo = {"name": frame["name"], "id": frame["id"], "avatar": frame["avatar"]};
           Aru.setTitle(userInfo["name"]);
         } else {
-          Aru.addUser(frame["name"] + "#" + frame["discriminator"], frame["avatar"], frame["id"], "#E7E7E9");
+          Aru.addUser(frame["name"], frame["discriminator"], frame["avatar"], frame["id"], "#E7E7E9");
         }
       } else if (frame["update"] == "user-avatar") {
         document.getElementById("img-" + frame["id"].toString()).style.backgroundImage = "url(" + frame["avatar"] + ")";
         userInfo["avatar"] = frame["avatar"];
       } else if (frame["update"] == "user-name") {
-        document.getElementById("name-" + frame["id"].toString()).innerHTML = frame["name"] + "#" + frame["discriminator"];
+        document.getElementById("name-" + frame["id"].toString()).innerHTML = frame["name"] + '<span class="chat-online-typing">#' + frame["discriminator"] + '</span>';
         if (frame["id"] == userInfo["id"]) {
           userInfo["name"] = frame["name"];
           Aru.setTitle(userInfo["name"]);          

@@ -327,9 +327,25 @@ p {
 	margin-bottom: 7px;
 }
 
+p>a {
+	color: #6695b7;
+	text-decoration: none;
+}
+
+p>a:hover {
+	text-decoration: underline;
+}
+
 img {
 	max-width: 350px;
 	max-height: 500px;
+	width: auto;
+	height: auto;
+}
+
+video {
+	max-width: 650px;
+	max-height: 350px;
 	width: auto;
 	height: auto;
 }

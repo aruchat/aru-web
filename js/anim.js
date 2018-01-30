@@ -54,7 +54,7 @@ Aru.hideIpNick = function() {
 	beginConnection();
 }
 
-Aru.addUser = function(name, avatar, id, color) { //Are we gonna use color?
+Aru.addUser = function(name, disc, avatar, id, color) { //Are we gonna use color?
 	color = color || "#E7E7E9"; //color if we use it
 	//make our elements and add a nice attribute to them to find them later
 	var div = document.createElement("DIV");
@@ -66,7 +66,7 @@ Aru.addUser = function(name, avatar, id, color) { //Are we gonna use color?
 	img.id = "img-" + id.toString();
 	div.id = "user-" + id.toString();
 	span.id = "name-" + id.toString();
-	span.innerHTML = name
+	span.innerHTML = name + '<span class="chat-online-typing">#' + disc + '</span>';
 	div.style.color = color;
 	var hr = document.createElement("HR");
 	div.setAttribute("u", name);
