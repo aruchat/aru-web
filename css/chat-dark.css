@@ -60,7 +60,7 @@ body {
 	top: 1vh;
 	right: 1vh;
 	color:white;
-	display: inline-block;
+	display: none;
 }
 
 .app-controls > img {

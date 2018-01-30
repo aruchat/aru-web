@@ -167,6 +167,6 @@ Aru.changeChannel = function(el) {
 	Aru.setTitle(el.getAttribute("id").replace("channel-", ""));
 }
 
-Aru.setTitle = function(channel) {
-	document.title = "#" + channel + " in " + Aru.serverName + " - Aru";
+Aru.setTitle = function(name) {
+	document.title = name + " - Aru";
 }

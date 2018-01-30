@@ -1,5 +1,11 @@
 var ws = null;
 var isFirstUserjoin = true;
+var userInfo = {}; // for storing information about yourself
+window.onload = function() {
+  if(window.process) {
+    document.getElementById("controls").style.display = "inline-block";
+  }
+}
 function beginConnection() {
   ws = new WebSocket("ws://" + document.getElementById('ip').value + "/chat/" + document.getElementById('nick').value);
   ws.binaryType = "arraybuffer";
@@ -28,13 +34,18 @@ function beginConnection() {
       } else if (frame["update"] == "user-join") {
         if (isFirstUserjoin) {
           isFirstUserjoin = false; // Workaround since first user-join event (you joining) is also sent to you
+          userInfo = {"name": frame["name"], "id": frame["id"], "avatar": frame["avatar"]};
+          Aru.setTitle(userInfo["name"]);
         } else {
           Aru.addUser(frame["name"], frame["avatar"], frame["id"], "#E7E7E9");
         }
       } else if (frame["update"] == "user-avatar") {
         document.getElementById("img-" + frame["id"].toString()).style.backgroundImage = "url(" + frame["avatar"] + ")";
+        userInfo["avatar"] = frame["avatar"];
       } else if (frame["update"] == "user-name") {
         document.getElementById("name-" + frame["id"].toString()).innerHTML = frame["name"];
+        userInfo["name"] = frame["name"];
+        Aru.setTitle(userInfo["name"]);
       }
     } else {
       Aru.addMessage("SERVER", frame["msg"], "#ED145B", "general", "");
