@@ -32,7 +32,7 @@ function beginConnection() {
           Aru.addUser(frame["name"], frame["avatar"], frame["id"], "#E7E7E9");
         }
       } else if (frame["update"] == "user-avatar") {
-        document.getElementById("img-" + frame["id"].toString()).src = frame["avatar"];
+        document.getElementById("img-" + frame["id"].toString()).style.backgroundImage = "url(" + frame["avatar"] + ")";
       } else if (frame["update"] == "user-name") {
         document.getElementById("name-" + frame["id"].toString()).innerHTML = frame["name"];
       }

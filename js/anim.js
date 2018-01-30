@@ -58,11 +58,11 @@ Aru.addUser = function(name, avatar, id, color) { //Are we gonna use color?
 	color = color || "#E7E7E9"; //color if we use it
 	//make our elements and add a nice attribute to them to find them later
 	var div = document.createElement("DIV");
-	var img = document.createElement("IMG");
+	var img = document.createElement("DIV");
 	var span = document.createElement("SPAN");
 	div.classList.add("chat-online-username");
 	img.classList.add("avatar-small");
-	img.src = avatar
+	img.style.backgroundImage = "url(" + avatar + ")";
 	img.id = "img-" + id.toString();
 	div.id = "user-" + id.toString();
 	span.id = "name-" + id.toString();
@@ -88,7 +88,7 @@ Aru.addMessage = function(name, msg, color, channel, avatar_src) {
 	var div = document.createElement("DIV");
 	var span = document.createElement("SPAN");
 	var time = document.createElement("SPAN");
-	var avatar = document.createElement("IMG");
+	var avatar = document.createElement("DIV");
 	var divblock = document.getElementById(channel);
 	var shouldScroll = ((divblock.scrollTop + divblock.clientHeight + 50) > divblock.scrollHeight);
 	var date = new Date();
@@ -102,7 +102,7 @@ Aru.addMessage = function(name, msg, color, channel, avatar_src) {
 	if (avatar_src == "") {
 
 	} else {
-		avatar.src = avatar_src;
+		avatar.style.backgroundImage = "url(" + avatar_src + ")";
 		divblock.appendChild(avatar);
 	}
 	div.appendChild(span);

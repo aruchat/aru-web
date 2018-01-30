@@ -120,10 +120,16 @@ body {
 	font-family: 'Roboto', sans-serif;
 	color: #E7E7E9;
 	font-size: 2vh;
+	margin-top: -6px;
 	text-decoration:  none;
-	padding: 1.25vh 0vh 1.25vh 1.25vh;
+	padding: 0vh 0vh 1.25vh 1.25vh;
 	font-weight: 200;
 }
+
+.chat-online-username:first-child {
+	margin-top: 6px;
+}
+
 .chat-online-typing {
 	font-family: 'Roboto', sans-serif;
 	color: #515161;
@@ -299,21 +305,21 @@ p {
 	margin-bottom: 2px;
 }
 .avatar {
-	max-width: 3.5vh;
-	max-height: 3.5vh;
-	width: auto;
-	height: auto;
+	width: 3.7vh;
+	height: 3.7vh;
 	margin-right: 10px;
-	padding-top: 2px;
+	background-size: cover;
+	background-size: top center;
 	vertical-align: top;
 	display: inline-block;
 	border-radius: 50%;
+	margin-top: 3px;
 }
 .avatar-small {
-	max-width: 2.5vh;
-	max-height: 2.5vh;
-	width: auto;
-	height: auto;
+	width: 2.5vh;
+	height: 2.5vh;
+	background-size: cover;
+	background-size: top center;
 	display: inline-block;
 	border-radius: 50%;
 	vertical-align: top;
