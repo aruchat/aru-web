@@ -234,6 +234,16 @@ hr {
 	width: 100%;
 	text-align: center;
 }
+
+.ip-use-ssl {
+	font-size: 1.5vh;
+	display: inline-block;
+	color: #AEAEB5;
+	font-weight: normal;
+	font-family: 'Heebo', sans-serif;
+	margin-left: 22px;
+}
+
 .ip-nick-container {
 	display:table-cell;
 	vertical-align: middle;

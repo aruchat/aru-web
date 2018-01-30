@@ -7,7 +7,12 @@ window.onload = function() {
   }
 }
 function beginConnection() {
-  ws = new WebSocket("ws://" + document.getElementById('ip').value + "/chat/" + document.getElementById('nick').value);
+  if (document.getElementById('isTLS').checked) {
+    var protocol = "wss://";
+  } else {
+    var protocol = "ws://";
+  }
+  ws = new WebSocket(protocol + document.getElementById('ip').value + "/chat/" + document.getElementById('nick').value);
   ws.binaryType = "arraybuffer";
 
   ws.onopen = function() {
