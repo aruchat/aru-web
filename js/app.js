@@ -60,7 +60,9 @@ function beginConnection() {
   };
 
   document.onkeypress = function(event) {
-    if (event.which == 13 || event.keyCode == 13) {
+    if ((event.which == 13 || event.keyCode == 13) && event.shiftKey) {
+      console.log("a");
+    } else if (event.which == 13 || event.keyCode == 13) {
       sendMessage();
     }
     return true;

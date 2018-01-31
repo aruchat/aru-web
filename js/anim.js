@@ -108,9 +108,10 @@ Aru.addMessage = function(name, msg, color, channel, avatar_src) {
 	div.appendChild(span);
 	div.appendChild(time);
 	div.appendChild(document.createElement("BR"));
-	var m = msg.split("\r\n");
+	var m = msg.split("\n");
+	m.pop();
 	if (m.length > 1) {
-		div.innerHTML += m.join("<br>");;
+		div.innerHTML += m.join("<br>");
 	} else {
 		div.innerHTML += msg;
 	}

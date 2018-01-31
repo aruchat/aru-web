@@ -195,6 +195,7 @@ hr {
 	position: fixed;
 	left: 0vw;
 	bottom: 0.5vh;
+	resize: none;
 }
 
 #blurfilter {
