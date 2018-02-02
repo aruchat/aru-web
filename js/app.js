@@ -62,6 +62,8 @@ function beginConnection() {
         Aru.addChannel(frame["name"], false);
       } else if (frame["update"] == "channel-remove") {
         Aru.removeChannel(frame["name"]);
+      } else if (frame["update"] == "server-name") {
+        document.getElementById("chat-name").innerHTML = frame["name"];
       }
     } else {
       Aru.addMessage("SERVER", frame["msg"], "#ED145B", "general", "");
