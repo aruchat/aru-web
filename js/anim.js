@@ -33,6 +33,7 @@
 //it isn't that hard
 var Aru = {}
 Aru.serverName = "";
+Aru.currentChannel = "";
 
 Aru.hideIpNick = function() {
 	//get our elements to do the stuff to
@@ -123,7 +124,7 @@ Aru.addMessage = function(name, msg, color, channel, avatar_src) {
 		divblock.scrollTop = divblock.scrollHeight - divblock.clientHeight;
 }
 
-Aru.addChannel = function(name) {
+Aru.addChannel = function(name, main) {
 	var container = document.getElementById("channel-container");
 	var namecontainer = document.getElementById("channels");
 	var channel = document.createElement("DIV");
@@ -132,7 +133,14 @@ Aru.addChannel = function(name) {
 	var id = document.createAttribute("id");
 	var selectid = document.createAttribute("id");
 	var onclick = document.createAttribute("onClick");
-	att.value = "false";
+	if(main == true) {
+		Aru.currentChannel = name;
+		att.value = "true";
+		channel.classList.add("chat-container");
+	} else {
+		att.value = "false";
+		channel.classList.add("chat-container-invisible");
+	}
 	id.value = name;
 	onclick.value = "Aru.changeChannel(this);";
 	selectid.value = "channel-" + name;
@@ -142,7 +150,6 @@ Aru.addChannel = function(name) {
 	namechannel.setAttributeNode(onclick);
 	channel.setAttributeNode(id);
 	namechannel.appendChild(document.createTextNode("#" + name + " "));
-	channel.classList.add("chat-container");
 	container.appendChild(channel);
 	namecontainer.appendChild(namechannel);
 }
@@ -155,6 +162,7 @@ Aru.deleteUsers = function() {
 }
 
 Aru.changeChannel = function(el) {
+	Aru.currentChannel = el.getAttribute("id").replace("channel-", "");
 	var changed = document.getElementById(el.getAttribute("id").replace("channel-", ""));
 	var current = document.querySelector(".chat-container");
 	var input = document.getElementById("chat-input");

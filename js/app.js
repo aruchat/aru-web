@@ -17,22 +17,27 @@ function beginConnection() {
 
   ws.onopen = function() {
     document.getElementById('chat-status').innerHTML = "Connected to " + document.getElementById('ip').value;
-    Aru.addChannel("general");
-    var request = {"type": "req", "req": "userlist"};
-    var request_framed = msgpack.encode(request);
-    ws.send(request_framed);
+    var userrequest = msgpack.encode({"type": "req", "req": "userlist"});
+    var channelrequest = msgpack.encode({"type": "req", "req": "channellist"});
+    ws.send(userrequest);
+    ws.send(channelrequest);
   };
 
   ws.onmessage = function(msg) {
     var frame = msgpack.decode(new Uint8Array(msg.data));
     console.log(frame);
     if (frame["type"] == "client") {
-      Aru.addMessage(frame["client"], frame["msg"], "#E7E7E9", "general", frame["avatar"]);
+      Aru.addMessage(frame["client"], frame["msg"], "#E7E7E9", frame["channel"], frame["avatar"]);
     } else if (frame["type"] == "update") {
       if (frame["update"] == "userlist") {
         var userlist = frame["users"];
         for(var i = 0; i < userlist.length; i++) {
           Aru.addUser(userlist[i]["name"], userlist[i]["discriminator"], userlist[i]["avatar"], userlist[i]["id"], "#E7E7E9");
+        }
+      } else if(frame["update"] == "channellist") {
+        var channels = frame["channels"];
+        for(var i = 0; i < channels.length; i++) {
+          Aru.addChannel(channels[i]["name"], channels[i]["main"]);
         }
       } else if (frame["update"] == "user-leave") {
         document.getElementById("online").removeChild(document.getElementById('user-' + frame["id"].toString()));
@@ -71,7 +76,7 @@ function beginConnection() {
 
 function sendMessage() {
   var input = document.getElementById('chat-input');
-  var payload = {"type": "msg", "msg": input.value, "markdown": true};
+  var payload = {"type": "msg", "msg": input.value, "channel": Aru.currentChannel, "markdown": true};
   var framed = msgpack.encode(payload);
   ws.send(framed);
   input.value = '';
