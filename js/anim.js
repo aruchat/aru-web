@@ -120,6 +120,10 @@ Aru.addMessage = function(name, msg, color, channel, avatar_src) {
 	var hr = document.createElement("HR");
 	hr.classList.add("hr-placeholder");
 	divblock.appendChild(hr);
+	if (channel != Aru.currentChannel) {
+		var selector = document.getElementById("channel-" + channel);
+		selector.className = "channel-new-unread";
+	}
 	if (shouldScroll)
 		divblock.scrollTop = divblock.scrollHeight - divblock.clientHeight;
 }
@@ -154,6 +158,11 @@ Aru.addChannel = function(name, main) {
 	namecontainer.appendChild(namechannel);
 }
 
+Aru.removeChannel = function(name) {
+	document.getElementById(name).remove();
+	document.getElementById("channel-" + name).remove();
+}
+
 Aru.deleteUsers = function() {
 	var node = document.getElementById("online");
 	while (node.hasChildNodes()) {
@@ -172,10 +181,11 @@ Aru.changeChannel = function(el) {
 	changed.classList.add("chat-container");
 	changed.classList.remove("chat-container-invisible");
 	input.setAttribute("placeholder", "Message #"+el.getAttribute("id").replace("channel-", ""));
+	el.className = "chat-channel";
 	el.setAttribute("selected", "true");
-	Aru.setTitle(el.getAttribute("id").replace("channel-", ""));
+	Aru.setTitle(userInfo["name"], Aru.currentChannel);
 }
 
-Aru.setTitle = function(name) {
-	document.title = name + " - Aru";
+Aru.setTitle = function(name, channel) {
+	document.title = name + " | #" + channel + " - Aru";
 }

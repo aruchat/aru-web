@@ -45,7 +45,7 @@ function beginConnection() {
         if (isFirstUserjoin) {
           isFirstUserjoin = false; // Workaround since first user-join event (you joining) is also sent to you
           userInfo = {"name": frame["name"], "id": frame["id"], "avatar": frame["avatar"]};
-          Aru.setTitle(userInfo["name"]);
+          Aru.setTitle(userInfo["name"], Aru.currentChannel);
         } else {
           Aru.addUser(frame["name"], frame["discriminator"], frame["avatar"], frame["id"], "#E7E7E9");
         }
@@ -58,6 +58,10 @@ function beginConnection() {
           userInfo["name"] = frame["name"];
           Aru.setTitle(userInfo["name"]);          
         }
+      } else if (frame["update"] == "channel-create") {
+        Aru.addChannel(frame["name"], false);
+      } else if (frame["update"] == "channel-remove") {
+        Aru.removeChannel(frame["name"]);
       }
     } else {
       Aru.addMessage("SERVER", frame["msg"], "#ED145B", "general", "");

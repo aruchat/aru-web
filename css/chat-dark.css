@@ -168,6 +168,16 @@ hr {
 	text-shadow: 0px 0px 0.5vh #747480;
 }
 
+.channel-new-unread {
+	color: #FF0080;
+	text-shadow: 0px 0px 0.5vh #747480;
+}
+
+.channel-new-unread:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
 .chat-channel:hover {
 	text-decoration: underline;
 	cursor: pointer;
