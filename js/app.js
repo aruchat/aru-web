@@ -1,6 +1,9 @@
 var ws = null;
 var isFirstUserjoin = true;
 var userInfo = {}; // for storing information about yourself
+var timeSinceLastOnTyping = 0;
+var currentlyTyping = [];
+
 window.onload = function() {
   if(window.process) {
     document.getElementById("controls").style.display = "inline-block";
@@ -64,13 +67,23 @@ function beginConnection() {
         Aru.removeChannel(frame["name"]);
       } else if (frame["update"] == "server-name") {
         document.getElementById("chat-name").innerHTML = frame["name"];
+      } else if (frame["update"] == "user-typing") {
+        currentlyTyping.push({"name": frame["name"], "id": frame["id"]});
+        Aru.updateTyping();
+        setTimeout(function() {Aru.removeTyping(frame["id"])}, 15000);
       }
     } else {
       Aru.addMessage("SERVER", frame["msg"], "#ED145B", "general", "");
     }
   };
 
-  document.onkeypress = function(event) {
+  document.getElementById('chat-input').onkeypress = function(event) {
+    var epoch = (new Date).getTime();
+    if ((epoch - timeSinceLastOnTyping) >= 15000) {
+      var req = msgpack.encode({"type": "req", "req": "sendtyping"});
+      ws.send(req);
+      timeSinceLastOnTyping = epoch;
+    }
     if ((event.which == 13 || event.keyCode == 13) && event.shiftKey) {
       console.log("a");
     } else if (event.which == 13 || event.keyCode == 13) {

@@ -39,7 +39,7 @@ body {
 .chat-container {
 	border: 1px #4C4C66 solid;
 	width: 74vw;
-	height: 80vh;
+	height: 78vh;
 	margin: 1vh;
 	padding: 0vh 1vh;
 	display: inline-block;
@@ -85,7 +85,7 @@ body {
 .chat-online {
 	border: 1px #4C4C66 solid;
 	width: 20.9vw;
-	height: 80vh;
+	height: 78vh;
 	margin: 1vh;
 	display: inline-block;
 	top: 11.45vh;
@@ -369,4 +369,12 @@ video {
 	max-height: 350px;
 	width: auto;
 	height: auto;
+}
+
+.currently-typing {
+	font-family: 'Roboto', sans-serif;
+	color: #515161;
+	position: fixed;
+	top: 91vh;
+	left: 1vh;
 }

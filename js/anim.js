@@ -186,6 +186,32 @@ Aru.changeChannel = function(el) {
 	Aru.setTitle(userInfo["name"], Aru.currentChannel);
 }
 
+Aru.removeTyping = function(id) {
+	for (var i = 0; i < currentlyTyping.length; i++) {
+		if (currentlyTyping[i]["id"] == id) {
+			currentlyTyping.splice(i, 1);
+		}
+	}
+	Aru.updateTyping();
+}
+
+Aru.updateTyping = function () {
+	var block = document.getElementById('istyping');
+	var length = currentlyTyping.length;
+
+	if (length > 3) {
+		block.innerHTML = "Several people are typing...";
+	} else if (length == 3) {
+		block.innerHTML = currentlyTyping[0]["name"] + ", " + currentlyTyping[1]["name"] + " and " + currentlyTyping[2]["name"] + " are typing...";
+	} else if (length == 2) {
+		block.innerHTML = currentlyTyping[0]["name"] + " and " + currentlyTyping[1]["name"] + " are typing...";
+	} else if (length == 1) {
+		block.innerHTML = currentlyTyping[0]["name"] + " is typing...";
+	} else {
+		block.innerHTML = "";
+	}
+}
+
 Aru.setTitle = function(name, channel) {
 	document.title = name + " | #" + channel + " - Aru";
 }
