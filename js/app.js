@@ -31,6 +31,10 @@ function beginConnection() {
     console.log(frame);
     if (frame["type"] == "client") {
       Aru.addMessage(frame["client"], frame["msg"], "#E7E7E9", frame["channel"], frame["avatar"]);
+      Aru.removeTyping(frame["client_id"]); 
+      if (userInfo["id"] == frame["client_id"]) {
+        timeSinceLastOnTyping = 0; //shh
+      }
     } else if (frame["type"] == "update") {
       if (frame["update"] == "userlist") {
         var userlist = frame["users"];
