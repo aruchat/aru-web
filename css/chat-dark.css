@@ -328,6 +328,7 @@ p {
 	margin-top: 3px;
 	margin-bottom: 2px;
 }
+
 .avatar {
 	width: 3.7vh;
 	height: 3.7vh;
@@ -339,6 +340,7 @@ p {
 	border-radius: 50%;
 	margin-top: 3px;
 }
+
 .avatar-small {
 	width: 2.5vh;
 	height: 2.5vh;
@@ -349,6 +351,7 @@ p {
 	vertical-align: top;
 	margin-right: 4px;
 	margin-bottom: 7px;
+	position: relative;
 }
 
 p>a {
@@ -386,4 +389,26 @@ video {
 	display: inline-block;
 	max-width: 25px;
 	max-height: 25px;
+}
+
+.status {
+	width: 0.8vh;
+	height: 0.8vh;
+	position: absolute;
+	bottom: 0;
+	right: -2px;
+	border-radius: 50%;
+	border: 1px solid #0B0B21;
+}
+
+.online {
+	background-color: #4CAF50;
+}
+
+.dnd {
+	background-color: #F44336;
+}
+
+.idle {
+	background-color: #FFC107;
 }

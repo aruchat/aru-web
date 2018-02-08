@@ -31,15 +31,11 @@ function beginConnection() {
     console.log(frame);
     if (frame["type"] == "client") {
       Aru.addMessage(frame["client"], frame["msg"], "#E7E7E9", frame["channel"], frame["avatar"]);
-      Aru.removeTyping(frame["client_id"]); 
-      if (userInfo["id"] == frame["client_id"]) {
-        timeSinceLastOnTyping = 0; //shh
-      }
     } else if (frame["type"] == "update") {
       if (frame["update"] == "userlist") {
         var userlist = frame["users"];
         for(var i = 0; i < userlist.length; i++) {
-          Aru.addUser(userlist[i]["name"], userlist[i]["discriminator"], userlist[i]["avatar"], userlist[i]["id"], "#E7E7E9");
+          Aru.addUser(userlist[i]["name"], userlist[i]["discriminator"], userlist[i]["avatar"], userlist[i]["id"], userlist[i]["status"], "#E7E7E9");
         }
       } else if(frame["update"] == "channellist") {
         var channels = frame["channels"];
@@ -52,7 +48,6 @@ function beginConnection() {
         if (isFirstUserjoin) {
           isFirstUserjoin = false; // Workaround since first user-join event (you joining) is also sent to you
           userInfo = {"name": frame["name"], "id": frame["id"], "avatar": frame["avatar"]};
-          Aru.setTitle(userInfo["name"], Aru.currentChannel);
         } else {
           Aru.addUser(frame["name"], frame["discriminator"], frame["avatar"], frame["id"], "#E7E7E9");
         }
@@ -63,7 +58,7 @@ function beginConnection() {
         document.getElementById("name-" + frame["id"].toString()).innerHTML = frame["name"] + '<span class="chat-online-typing">#' + frame["discriminator"] + '</span>';
         if (frame["id"] == userInfo["id"]) {
           userInfo["name"] = frame["name"];
-          Aru.setTitle(userInfo["name"]);          
+          Aru.setTitle(userInfo["name"], Aru.currentChannel);          
         }
       } else if (frame["update"] == "channel-create") {
         Aru.addChannel(frame["name"], false);
@@ -75,6 +70,8 @@ function beginConnection() {
         currentlyTyping.push({"name": frame["name"], "id": frame["id"]});
         Aru.updateTyping();
         setTimeout(function() {Aru.removeTyping(frame["id"])}, 15000);
+      } else if (frame["update"] == "user-status") {
+        document.getElementById("img-" + frame["id"].toString()).firstChild.className = "status " + frame["status"];
       }
     } else {
       Aru.addMessage("SERVER", frame["msg"], "#ED145B", "general", "");
@@ -102,5 +99,7 @@ function sendMessage() {
   var payload = {"type": "msg", "msg": input.value, "channel": Aru.currentChannel, "markdown": true};
   var framed = msgpack.encode(payload);
   ws.send(framed);
+  timeSinceLastOnTyping = 0;
+  Aru.removeTyping(userInfo["id"]);
   input.value = '';
 }

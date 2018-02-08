@@ -55,14 +55,16 @@ Aru.hideIpNick = function() {
 	beginConnection();
 }
 
-Aru.addUser = function(name, disc, avatar, id, color) { //Are we gonna use color?
+Aru.addUser = function(name, disc, avatar, id, status, color) { //Are we gonna use color?
 	color = color || "#E7E7E9"; //color if we use it
 	//make our elements and add a nice attribute to them to find them later
 	var div = document.createElement("DIV");
 	var img = document.createElement("DIV");
+	var badge = document.createElement("DIV");
 	var span = document.createElement("SPAN");
 	div.classList.add("chat-online-username");
 	img.classList.add("avatar-small");
+	badge.className = "status " + status;
 	img.style.backgroundImage = "url(" + avatar + ")";
 	img.id = "img-" + id.toString();
 	div.id = "user-" + id.toString();
@@ -72,6 +74,7 @@ Aru.addUser = function(name, disc, avatar, id, color) { //Are we gonna use color
 	var hr = document.createElement("HR");
 	div.setAttribute("u", name);
 	hr.setAttribute("u", name);
+	img.appendChild(badge);
 	div.appendChild(img);
 	div.appendChild(span)
 	div.appendChild(hr)
@@ -139,8 +142,10 @@ Aru.addChannel = function(name, main) {
 	var onclick = document.createAttribute("onClick");
 	if(main == true) {
 		Aru.currentChannel = name;
+		Aru.mainChannel = name;
 		att.value = "true";
 		channel.classList.add("chat-container");
+		Aru.setTitle(userInfo["name"], Aru.mainChannel);
 	} else {
 		att.value = "false";
 		channel.classList.add("chat-container-invisible");
