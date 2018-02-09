@@ -145,7 +145,7 @@ Aru.addChannel = function(name, main) {
 		Aru.mainChannel = name;
 		att.value = "true";
 		channel.classList.add("chat-container");
-		Aru.setTitle(userInfo["name"], Aru.mainChannel);
+		Aru.setTitle(userInfo["name"], Aru.mainChannel, 0);
 	} else {
 		att.value = "false";
 		channel.classList.add("chat-container-invisible");
@@ -217,6 +217,10 @@ Aru.updateTyping = function () {
 	}
 }
 
-Aru.setTitle = function(name, channel) {
-	document.title = name + " | #" + channel + " - Aru";
+Aru.setTitle = function(name, channel, unread) {
+	if(unread == 0) {
+		document.title = name + " | #" + channel + " - Aru";
+	} else {
+		document.title = "(" + unread.toString() + ") " + name + " | #" + channel + " - Aru";
+	}
 }

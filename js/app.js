@@ -3,10 +3,23 @@ var isFirstUserjoin = true;
 var userInfo = {}; // for storing information about yourself
 var timeSinceLastOnTyping = 0;
 var currentlyTyping = [];
+var unreadMsg = 0;
+
+function checkPageFocus() {
+  if ( document.hasFocus() ) {
+    userInfo["focus"] = true;
+    unreadMsg = 0;
+    Aru.setTitle(userInfo["name"], Aru.currentChannel, unreadMsg);
+  } else {
+    userInfo["focus"] = false;
+  }
+}
 
 window.onload = function() {
   if(window.process) {
     document.getElementById("controls").style.display = "inline-block";
+  } else {
+    setInterval(checkPageFocus, 2000);
   }
 }
 function beginConnection() {
@@ -30,7 +43,12 @@ function beginConnection() {
     var frame = msgpack.decode(new Uint8Array(msg.data));
     console.log(frame);
     if (frame["type"] == "client") {
+      if(userInfo["focus"] == false) {
+        unreadMsg += 1;
+        Aru.setTitle(userInfo["name"], Aru.currentChannel, unreadMsg);
+      }
       Aru.addMessage(frame["client"], frame["msg"], "#E7E7E9", frame["channel"], frame["avatar"]);
+      Aru.removeTyping(frame["client_id"]);
     } else if (frame["type"] == "update") {
       if (frame["update"] == "userlist") {
         var userlist = frame["users"];
@@ -58,7 +76,7 @@ function beginConnection() {
         document.getElementById("name-" + frame["id"].toString()).innerHTML = frame["name"] + '<span class="chat-online-typing">#' + frame["discriminator"] + '</span>';
         if (frame["id"] == userInfo["id"]) {
           userInfo["name"] = frame["name"];
-          Aru.setTitle(userInfo["name"], Aru.currentChannel);          
+          Aru.setTitle(userInfo["name"], Aru.currentChannel, unreadMsg);          
         }
       } else if (frame["update"] == "channel-create") {
         Aru.addChannel(frame["name"], false);
