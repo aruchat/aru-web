@@ -412,3 +412,60 @@ video {
 .idle {
 	background-color: #FFC107;
 }
+
+/*embed*/
+.embed {
+	font-family: 'Roboto', sans-serif;
+    background-color: #17172C;
+    max-width: 27vw;
+    width: auto;
+    border: 1px solid #17172C;
+    border-radius: 7px;
+    padding: 5px;
+    padding-left: 10px;
+    color: #E7E7E9;
+    position: relative;
+    overflow: auto;
+}
+.embed-title {
+	font-weight: bold;
+	padding: 6px;
+	margin-left: -6px;
+}
+.embed-body {
+	font-size: 0.8rem;
+	margin-bottom: 5px;
+}
+.embed-thumb {
+    float: right;
+    width: 8vh;
+    height: 8vh;
+    border-radius: 5px;
+}
+
+.embed-footer {
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    font-size: small;
+    display: inline-block;
+    margin-top: 1vh;
+}
+
+.embed-img {
+    max-width: 250px;
+    max-height: 400px;
+    width: auto;
+    height: auto;
+}
+
+.embed-footer-img {
+    width: 20px;
+    height: 20px;
+    background-size: cover;
+    background-size: top center;
+    display: inline-block;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 6px;
+}

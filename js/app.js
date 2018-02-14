@@ -47,7 +47,7 @@ function beginConnection() {
         unreadMsg += 1;
         Aru.setTitle(userInfo["name"], Aru.currentChannel, unreadMsg);
       }
-      Aru.addMessage(frame["client"], frame["msg"], "#E7E7E9", frame["channel"], frame["avatar"]);
+      Aru.addMessage(frame["client"], frame["msg"], "#E7E7E9", frame["channel"], frame["avatar"], frame["embed"]);
       Aru.removeTyping(frame["client_id"]);
     } else if (frame["type"] == "update") {
       if (frame["update"] == "userlist") {
