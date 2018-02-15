@@ -22,17 +22,18 @@ body {
 	font-family: 'Heebo', sans-serif;
 	color: #E7E7E9;
 	font-weight: normal;
-	font-size: 5vh;
-	margin: 2vh;
+	font-size: 3rem;
+	margin-left: 2vh;
+	margin-top: 1vh;
 	display: inline-block;
 }
 
 .chat-info {
-	font-size: 3vh;
+	font-size: 2rem;
 	display: inline-block;
 	color: #4C4C66;
 	font-weight: normal;
-	margin: 2vh;
+	margin: 1vh;
 	font-family: 'Heebo', sans-serif;
 }
 
@@ -99,18 +100,18 @@ body {
 .chat-message {
 	font-family: 'Roboto', sans-serif;
 	color: #E7E7E9;
-	font-size: 1.5vh;
+	font-size: 0.9rem;
 	padding-bottom: 1vh;
 	display: inline-block;
 }
 .chat-msg-time {
 	color: #515161;
-	font-size: 1.25vh;
+	font-size: 0.8rem;
 }
 
 .chat-msg-username {
 	color: #E7E7E9;
-	font-size: 1.75vh;
+	font-size: 1rem;
 	text-decoration:  none;
 	padding-bottom: 0.5vh;
 	font-weight: 200;
@@ -119,7 +120,7 @@ body {
 .chat-online-username {
 	font-family: 'Roboto', sans-serif;
 	color: #E7E7E9;
-	font-size: 2vh;
+	font-size: 1.2rem;
 	margin-top: -6px;
 	text-decoration:  none;
 	padding: 0vh 0vh 1.25vh 1.25vh;
@@ -133,7 +134,7 @@ body {
 .chat-online-typing {
 	font-family: 'Roboto', sans-serif;
 	color: #515161;
-	font-size: 1.25vh;
+	font-size: 0.8rem;
 	text-decoration: none;
 	font-weight: 200;
 }
@@ -160,7 +161,7 @@ hr {
 .chat-channel {
 	-webkit-app-region: no-drag;
 	color: #3A3A4C;
-	font-size: 1.75vh;
+	font-size: 1rem;
 	text-decoration: none;
 }
 
@@ -240,7 +241,7 @@ hr {
 }
 
 .ip-nick-label {
-	font-size: 3vh;
+	font-size: 1.6rem;
 	display: inline-block;
 	color: #AEAEB5;
 	font-weight: normal;
@@ -250,7 +251,7 @@ hr {
 }
 
 .ip-use-ssl {
-	font-size: 1.5vh;
+	font-size: 1rem;
 	display: inline-block;
 	color: #AEAEB5;
 	font-weight: normal;
@@ -272,7 +273,7 @@ hr {
 	width: 90%;
 	height: 3vh;
 	padding: 1vh;
-	font-size: 3vh;
+	font-size: 1.7rem;
 	background-color: #17172C;
 	margin:auto;
 	display:block;
@@ -284,7 +285,7 @@ hr {
 	color:#E7E7E9;
 	width: 90%;
 	padding: 1vh;
-	font-size: 3vh;
+	font-size: 1.7rem;
 	background-color: #17172C;
 	margin:auto;
 	display:block;
@@ -293,7 +294,7 @@ hr {
 	border-radius: 1vh;
 }
 .title {
-	font-size: 10vh;
+	font-size: 5rem;
 	display: inline-block;
 	color: #AEAEB5;
 	font-weight: normal;
@@ -330,8 +331,8 @@ p {
 }
 
 .avatar {
-	width: 3.7vh;
-	height: 3.7vh;
+	width: 35px;
+	height: 35px;
 	margin-right: 10px;
 	background-size: cover;
 	background-size: top center;
@@ -342,8 +343,8 @@ p {
 }
 
 .avatar-small {
-	width: 2.5vh;
-	height: 2.5vh;
+	width: 25px;
+	height: 25px;
 	background-size: cover;
 	background-size: top center;
 	display: inline-block;
@@ -417,12 +418,12 @@ video {
 .embed {
 	font-family: 'Roboto', sans-serif;
     background-color: #17172C;
-    max-width: 27vw;
+    max-width: 500px;
     width: auto;
     border: 1px solid #17172C;
     border-radius: 7px;
     padding: 5px;
-    padding-left: 10px;
+    padding-left: px;
     color: #E7E7E9;
     position: relative;
     overflow: auto;

@@ -67,7 +67,7 @@ function beginConnection() {
           isFirstUserjoin = false; // Workaround since first user-join event (you joining) is also sent to you
           userInfo = {"name": frame["name"], "id": frame["id"], "avatar": frame["avatar"]};
         } else {
-          Aru.addUser(frame["name"], frame["discriminator"], frame["avatar"], frame["id"], "#E7E7E9");
+          Aru.addUser(frame["name"], frame["discriminator"], frame["avatar"], frame["id"], frame["status"], "#E7E7E9");
         }
       } else if (frame["update"] == "user-avatar") {
         document.getElementById("img-" + frame["id"].toString()).style.backgroundImage = "url(" + frame["avatar"] + ")";
