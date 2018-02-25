@@ -90,6 +90,8 @@ function beginConnection() {
         setTimeout(function() {Aru.removeTyping(frame["id"])}, 15000);
       } else if (frame["update"] == "user-status") {
         document.getElementById("img-" + frame["id"].toString()).firstChild.className = "status " + frame["status"];
+      } else if (frame["update"] == "user-presence") {
+        Aru.updateUserPresence(frame["presence"], frame["id"]);
       }
     } else {
       Aru.addMessage("SERVER", frame["msg"], "#ED145B", "general", "");

@@ -386,6 +386,14 @@ video {
 	left: 1vh;
 }
 
+.user-presence {
+	font-family: 'Roboto', sans-serif;
+	color: #515161;
+	font-size: small;
+	margin-top: -11px;
+	margin-left: 29px;
+}
+
 .emoji {
 	display: inline-block;
 	max-width: 25px;

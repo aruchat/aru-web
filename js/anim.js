@@ -80,7 +80,25 @@ Aru.addUser = function(name, disc, avatar, id, status, color) { //Are we gonna u
 	div.appendChild(hr)
 	var userlist = document.getElementById("online");
 	userlist.appendChild(div)
-	
+}
+
+Aru.updateUserPresence = function(presence, id) {
+	if (document.getElementById("presence-" + id) == undefined) {
+		var div = document.createElement("div");
+		var userblock = document.getElementById("user-" + id);
+
+		div.id = "presence-" + id;
+		div.className = "user-presence";
+		div.innerHTML = "In " + presence["name"]; 
+
+		userblock.insertBefore(div, userblock.lastChild);
+	} else {
+		if (presence["method"] == "update") {
+			document.getElementById("presence-" + id).innerHTML = "In " + presence["name"];
+		} else {
+			document.getElementById("presence-" + id).remove();
+		}
+	}
 }
 
 function safe_tags(str) {
