@@ -1,36 +1,3 @@
-/*
-                                                                     /$$
-                                                                    | $$
- /$$   /$$  /$$$$$$$  /$$$$$$         /$$$$$$   /$$$$$$   /$$$$$$$ /$$$$$$
-| $$  | $$ /$$_____/ /$$__  $$       /$$__  $$ /$$__  $$ /$$_____/|_  $$_/
-| $$  | $$|  $$$$$$ | $$$$$$$$      | $$  \ $$| $$  \ $$|  $$$$$$   | $$
-| $$  | $$ \____  $$| $$_____/      | $$  | $$| $$  | $$ \____  $$  | $$ /$$
-|  $$$$$$/ /$$$$$$$/|  $$$$$$$      | $$$$$$$/|  $$$$$$/ /$$$$$$$/  |  $$$$/
- \______/ |_______/  \_______/      | $$____/  \______/ |_______/    \___/
-                                    | $$
-                                    | $$
-                                    |__/
-                                                               /$$
-                                                              | $$
-  /$$$$$$   /$$$$$$   /$$$$$$  /$$   /$$  /$$$$$$   /$$$$$$$ /$$$$$$   /$$$$$$$
- /$$__  $$ /$$__  $$ /$$__  $$| $$  | $$ /$$__  $$ /$$_____/|_  $$_/  /$$_____/
-| $$  \__/| $$$$$$$$| $$  \ $$| $$  | $$| $$$$$$$$|  $$$$$$   | $$   |  $$$$$$
-| $$      | $$_____/| $$  | $$| $$  | $$| $$_____/ \____  $$  | $$ /$$\____  $$
-| $$      |  $$$$$$$|  $$$$$$$|  $$$$$$/|  $$$$$$$ /$$$$$$$/  |  $$$$//$$$$$$$/
-|__/       \_______/ \____  $$ \______/  \_______/|_______/    \___/ |_______/
-                          | $$
-                          | $$
-                          |__/
-                              /$$                 /$$
-                             | $$                | $$
-  /$$$$$$   /$$$$$$$ /$$$$$$$| $$$$$$$   /$$$$$$ | $$  /$$$$$$
- |____  $$ /$$_____//$$_____/| $$__  $$ /$$__  $$| $$ /$$__  $$
-  /$$$$$$$|  $$$$$$|  $$$$$$ | $$  \ $$| $$  \ $$| $$| $$$$$$$$
- /$$__  $$ \____  $$\____  $$| $$  | $$| $$  | $$| $$| $$_____/
-|  $$$$$$$ /$$$$$$$//$$$$$$$/| $$  | $$|  $$$$$$/| $$|  $$$$$$$
- \_______/|_______/|_______/ |__/  |__/ \______/ |__/ \_______/
-*/
-//it isn't that hard
 var Aru = {}
 Aru.serverName = "";
 Aru.currentChannel = "";
@@ -99,10 +66,6 @@ Aru.updateUserPresence = function(presence, id) {
 			document.getElementById("presence-" + id).remove();
 		}
 	}
-}
-
-function safe_tags(str) {
-    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') ;
 }
 
 Aru.addMessage = function(name, msg, color, channel, avatar_src, embed) {
@@ -272,7 +235,7 @@ Aru.createEmbed = function(embed) {
 			author.className = "embed-title";
 			subtitle.className = "embed-body";
 			video.className = "embed-img";
-			author.innerHTML = oembed["author_name"] || oembed["title"];
+			author.innerHTML = oembed["author_name"] || oembed["title"] || "";
 			subtitle.innerHTML = oembed["title"];
 			video.innerHTML = oembed["html"];
 			resultembed.appendChild(author);
@@ -291,13 +254,13 @@ Aru.createEmbed = function(embed) {
 			title.className = "embed-title";
 			desc.className = "embed-body";
 			thumbnail.className = "embed-img";
-			title.innerHTML = oembed["title"] || oembed["author_name"];
+			title.innerHTML = oembed["title"] || oembed["author_name"] || "";
 			if(oembed["description"] != undefined) {
 				var m = oembed["description"].split("\n");
 				if (m.length > 1) {
 					desc.innerHTML += m.join("<br>");
 				} else {
-					desc.innerHTML += msg;
+					desc.innerHTML += m;
 				}
 			} else {
 				desc.innerHTML = "";
