@@ -1,6 +1,7 @@
 var Aru = {}
 Aru.serverName = "";
 Aru.currentChannel = "";
+Aru.popper = null;
 
 Aru.hideIpNick = function() {
 	//get our elements to do the stuff to
@@ -29,8 +30,11 @@ Aru.addUser = function(name, disc, avatar, id, status, color) { //Are we gonna u
 	var img = document.createElement("DIV");
 	var badge = document.createElement("DIV");
 	var span = document.createElement("SPAN");
+	var onclick = document.createAttribute("onClick");
+	onclick.value = "Aru.showUserPopper(" + id.toString() + ");";
 	div.classList.add("chat-online-username");
 	img.classList.add("avatar-small");
+	div.setAttributeNode(onclick);
 	badge.className = "status " + status;
 	img.style.backgroundImage = "url(" + avatar + ")";
 	img.id = "img-" + id.toString();
@@ -66,6 +70,44 @@ Aru.updateUserPresence = function(presence, id) {
 			document.getElementById("presence-" + id).remove();
 		}
 	}
+}
+
+Aru.showUserPopper = function(id) {
+	var popper = document.getElementById("popper");
+	var reference = document.getElementById("user-" + id.toString());
+	var avatar = document.createElement("div");
+	var name = document.createElement("div");
+	var status = document.createElement("div");
+
+	if (Aru.popper != null) {
+		popper.innerHTML = "";
+		popper.style.display = "none";
+		Aru.popper.destroy();
+	}
+	
+	avatar.id = "popper-avatar";
+	avatar.style.backgroundImage = document.getElementById("img-" + id.toString()).style.backgroundImage;
+	name.id = "popper-name";
+	name.innerHTML = document.getElementById("name-" + id.toString()).innerHTML;
+	status.id = "popper-status";
+	status.className = document.getElementById("img-" + id.toString()).firstChild.className;
+	avatar.appendChild(status);
+	popper.appendChild(avatar);
+	popper.appendChild(name);
+
+	if (document.getElementById("presence-" + id) != undefined) {
+		popper.appendChild(document.createElement("hr"));
+		var presence = document.createElement("div");
+		var info = document.createElement("div");
+		info.id = "popper-presence-info";
+		presence.id = "popper-presence-status";
+		presence.innerHTML = document.getElementById("presence-" + id.toString()).innerHTML;
+		info.appendChild(presence);
+		popper.appendChild(info);
+	}
+
+	popper.style.display = "block";
+	Aru.popper = new Popper(reference, popper, {placement: 'left'});
 }
 
 Aru.addMessage = function(name, msg, color, channel, avatar_src, embed) {

@@ -33,6 +33,14 @@ function beginConnection() {
 
   ws.onopen = function() {
     document.getElementById('chat-status').innerHTML = "Connected to " + document.getElementById('ip').value;
+    document.addEventListener('click', function(e) {
+      e = e || window.event;
+      var target = e.target || e.srcElement;
+      console.log(target.parentNode.className);
+      if (target.parentNode.className != "chat-online-username") {
+        document.getElementById('popper').style.display = "none";
+      }   
+    }, false);
     var userrequest = msgpack.encode({"type": "req", "req": "userlist"});
     var channelrequest = msgpack.encode({"type": "req", "req": "channellist"});
     ws.send(userrequest);
