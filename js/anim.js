@@ -60,7 +60,15 @@ Aru.updateUserPresence = function(presence, id) {
 
 		div.id = "presence-" + id;
 		div.className = "user-presence";
-		div.innerHTML = "In " + presence["name"]; 
+		if (presence["type"] == "rich") {
+			div.innerHTML = "In " + presence["name"] + " ⌨";
+			var presence_attrib = document.createAttribute("data-rpc");
+			presence_attrib.value = JSON.stringify(presence["rich"]);
+			div.setAttributeNode(presence_attrib); 
+		} else {
+			div.innerHTML = "In " + presence["name"]; 
+		}
+		
 
 		userblock.insertBefore(div, userblock.lastChild);
 	} else {
@@ -96,13 +104,35 @@ Aru.showUserPopper = function(id) {
 	popper.appendChild(name);
 
 	if (document.getElementById("presence-" + id) != undefined) {
+		var presence_info = document.getElementById("presence-" + id);
 		popper.appendChild(document.createElement("hr"));
 		var presence = document.createElement("div");
 		var info = document.createElement("div");
 		info.id = "popper-presence-info";
-		presence.id = "popper-presence-status";
-		presence.innerHTML = document.getElementById("presence-" + id.toString()).innerHTML;
-		info.appendChild(presence);
+		if (presence_info.getAttribute("data-rpc") != undefined) {
+			var parsed = JSON.parse(presence_info.getAttribute("data-rpc"));
+			var richwrapper = document.createElement("div");
+			richwrapper.id = "popper-presence-rich-wrapper";
+			var icon = document.createElement("div");
+			var desc = document.createElement("div");
+			var title = document.createElement("div");
+			var infowrapper = document.createElement("div");
+			infowrapper.id = "popper-presence-rich-info-wrapper";
+			icon.id = "popper-presence-rich-image";
+			desc.id = "popper-presence-rich-description";
+			title.id = "popper-presence-rich-title";
+			icon.style.backgroundImage = "url(" + parsed["icon"] + ")";
+			desc.innerHTML = parsed["desc"];
+			title.innerHTML = parsed["title"];
+			info.appendChild(icon);
+			infowrapper.appendChild(title);
+			infowrapper.appendChild(desc);
+			info.appendChild(infowrapper);
+		} else {
+			presence.id = "popper-presence-status";
+			presence.innerHTML = presence_info.innerHTML;
+			info.appendChild(presence);
+		}
 		popper.appendChild(info);
 	}
 
