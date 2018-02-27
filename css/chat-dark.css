@@ -399,6 +399,16 @@ video {
 	max-height: 25px;
 }
 
+.pinged > p {
+	border-radius: 5px;
+	border: 1px solid #17172C;
+	border-left: 4px solid #FAA61A;
+	background-color: #17172C;
+	padding: 3px;
+}
+
+/* user status */
+
 .status {
 	width: 0.8vh;
 	height: 0.8vh;

@@ -36,9 +36,9 @@ function beginConnection() {
     document.addEventListener('click', function(e) {
       e = e || window.event;
       var target = e.target || e.srcElement;
-      console.log(target.parentNode.className);
       if (target.parentNode.className != "chat-online-username") {
         document.getElementById('popper').style.display = "none";
+        document.getElementById('popper').className = "";
       }   
     }, false);
     var userrequest = msgpack.encode({"type": "req", "req": "userlist"});
@@ -55,7 +55,7 @@ function beginConnection() {
         unreadMsg += 1;
         Aru.setTitle(userInfo["name"], Aru.currentChannel, unreadMsg);
       }
-      Aru.addMessage(frame["client"], frame["msg"], "#E7E7E9", frame["channel"], frame["avatar"], frame["embed"]);
+      Aru.addMessage(frame["client"], frame["msg"], "#E7E7E9", frame["channel"], frame["avatar"], frame["embed"], frame["client_id"]);
       Aru.removeTyping(frame["client_id"]);
     } else if (frame["type"] == "update") {
       if (frame["update"] == "userlist") {

@@ -110,22 +110,45 @@ Aru.showUserPopper = function(id) {
 	Aru.popper = new Popper(reference, popper, {placement: 'left'});
 }
 
-Aru.addMessage = function(name, msg, color, channel, avatar_src, embed) {
+Aru.addMessage = function(name, msg, color, channel, avatar_src, embed, id) {
 	color = color || "#E7E7E9"; //color if we use it
+	id = id || "";
 	var div = document.createElement("DIV");
 	var span = document.createElement("SPAN");
 	var time = document.createElement("SPAN");
 	var avatar = document.createElement("DIV");
+	var message = document.createElement("SPAN");
 	var embedblock = Aru.createEmbed(embed);
 	var divblock = document.getElementById(channel);
 	var shouldScroll = ((divblock.scrollTop + divblock.clientHeight + 50) > divblock.scrollHeight);
 	var date = new Date();
+	var onclick = document.createAttribute("onClick");
+
+	var pings = msg.match(/@![0-9]*/g);
+	if (pings != null) {
+		for (var i = 0; i < pings.length; i++) {
+			var pinged = pings[i].replace("@!", "");
+			try {
+				var name = document.getElementById("name-" + pinged).firstChild.data;
+			} catch (e) {
+				var name = "invalid-user";
+			}
+			msg = msg.replace(pings[i], '<a href="#">@' + name + "</a>");
+			if (pinged == userInfo["id"]) {
+				message.className = "pinged";
+			}
+			Aru.notify(name, msg.replace(/<(?:.|\n)*?>/gm, ''), avatar_src, channel); //dumb hack since markdown always embeds it into a <p> tag
+		}
+	}
+
 	div.classList.add("chat-message");
 	span.classList.add("chat-msg-username");
 	time.classList.add("chat-msg-time");
 	avatar.classList.add("avatar");
+	onclick.value = "Aru.addPing(" + id + ");";
 	span.innerHTML = name + " ";
 	span.style.color = color;
+	span.setAttributeNode(onclick);
 	time.appendChild(document.createTextNode("Today at " + (date.getHours()<10?'0':'') + date.getHours() + ":" + (date.getMinutes()<10?'0':'') + date.getMinutes()));
 	if (avatar_src == "") {
 
@@ -139,10 +162,11 @@ Aru.addMessage = function(name, msg, color, channel, avatar_src, embed) {
 	var m = msg.split("\n");
 	m.pop();
 	if (m.length > 1) {
-		div.innerHTML += m.join("<br>");
+		message.innerHTML += m.join("<br>");
 	} else {
-		div.innerHTML += msg;
+		message.innerHTML += msg;
 	}
+	div.appendChild(message);
 	divblock.appendChild(div);
 	if(embedblock != "") {
 		divblock.appendChild(embedblock);
@@ -315,5 +339,21 @@ Aru.createEmbed = function(embed) {
 	} catch(e) {
 		console.log(e);
 		return "";
+	}
+}
+
+Aru.addPing = function(id) {
+	document.getElementById("chat-input").value += "@!" + id + " ";
+}
+
+Aru.notify = function(name, body, avatar, channel) {
+	if(window.Notification && Notification.permission !== "denied") {
+		Notification.requestPermission(function(status) {
+			var n = new Notification(name + " (#" + channel + ")", { 
+				body: body,
+				icon: avatar
+			});
+			setTimeout(function() { n.close(); }, 2000);
+		});
 	}
 }
