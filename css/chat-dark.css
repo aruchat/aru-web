@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Heebo:300|Roboto|Roboto+Condensed');
+@import url('https://fonts.googleapis.com/css?family=Heebo:300|Roboto:400,700|Roboto+Condensed');
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -70,16 +70,14 @@ body {
 }
 
 .app-user {
-	width: 10vw;
-	font-size: 20px;
-	display: inline-block;
+	font-size: 14px;
+	display: block;
 	color: #4C4C66;
 	font-weight: normal;
 	font-family: 'Heebo', sans-serif;
 	position: fixed;
-	top: 0.9vh;
-	right: 125px;
-	text-align: right;
+	top: 90.6vh;
+	left: 78.5vw;
 }
 
 
@@ -407,6 +405,15 @@ video {
 	padding: 3px;
 }
 
+.cog {
+	width: 10px;
+	height: 10px;
+}
+
+.cog:hover {
+	cursor: pointer;
+}
+
 /* user status */
 
 .status {
@@ -491,84 +498,141 @@ video {
 /* popper */
 
 #popper {
-	font-family: 'Roboto', sans-serif;
-	background-color: #121227;
-	border-radius: 13px;
-	width: 250px;
-	padding: 20px;
-	height: auto;
-	text-align: center;
-	box-shadow: 0px 0px 4px black;
+    font-family: 'Roboto', sans-serif;
+    background-color: #17172f;
+    border-radius: 13px;
+    width: 250px;
+    padding: 20px;
+    height: auto;
+    text-align: center;
+    filter: drop-shadow(0px 0px 5px black);
+    animation: move 0.3s;
+    animation-fill-mode: forwards;
 }
 
 #popper-avatar {
-	width: 100px;
-	height: 100px;
-	margin-top: 20px;
-	background-size: cover;
-	background-size: top center;
-	vertical-align: top;
-	display: inline-block;
-	border-radius: 50%;
-	position: relative;
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    background-size: top center;
+    vertical-align: top;
+    display: inline-block;
+    border-radius: 50%;
+
+    position: relative;
 }
 
 #popper-status {
-	width: 16px;
-	height: 16px;
-	position: absolute;
-	bottom: 0;
-	right: 4px;
-	border-radius: 50%;
-	border: 3px solid #121227;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    bottom: 0;
+    right: 4px;
+    border-radius: 50%;
+    border: 3px solid #17172f;
 }
 
 #popper-name {
-	margin-top: 8px;
-	color: #E7E7E9;
-	font-size: 1.2rem;
-	text-decoration:  none;
-	padding-bottom: 0.5vh;
-	font-weight: 200;
+    margin-top: 8px;
+    color: #E7E7E9;
+    font-size: 1.2rem;
+    text-decoration: none;
+    font-weight: 200;
 }
 
-#popper-presence-info {
-	padding: 0;
-	color: white;
-	text-align: left;
+#popper-game-info {
+    margin: -20px;
+    margin-top: 16px;
+    padding: 9px;
+    color: white;
+    text-align: left;
+    background-color: #0B0B21;
 }
 
-#popper-presence-status {
-	font-size: 1rem;
+#popper-game-status {
+    font-size: 1rem;
+    font-weight: 700;
 }
 
-#popper-presence-rich-wrapper {
-	margin-top: -10px;
+#popper-game-rich-wrapper {
+    margin-top: -10px;
+    margin-bottom: 10px;
 }
 
-#popper-presence-rich-image {
-	width: 80px;
-	height: 80px;
-	margin-top: 20px;
-	background-size: cover;
-	background-size: top center;
-	vertical-align: top;
-	display: inline-block;
-	border-radius: 10px;
-	
-	position: relative;
+#popper-game-rich-image {
+    width: 60px;
+    height: 60px;
+    margin-top: 20px;
+    background-size: cover;
+    background-size: top center;
+    vertical-align: top;
+    display: inline-block;
+    border-radius: 10px;
+
+    position: relative;
 }
 
-#popper-presence-rich-info-wrapper {
-	display: inline-block; 
-	margin-top: 20px; 
-	margin-left: 5px;
+#popper-game-rich-title {
+    font-size: 1rem;
 }
 
-#popper-presence-rich-title {
-	font-size: 1rem;
+#popper-game-rich-description {
+    font-size: 0.8rem;
 }
 
-#popper-presence-rich-description {
-	font-size: 0.8rem;
+hr {
+    border-style: solid;
+    border-color: #454556;
+    margin-top: 0.1vh;
+    margin-bottom: 0.3vh;
+    border-width: 1px;
+    border-top-width: 0px;
+}
+
+#popper-role-wrapper {
+    text-align: left;
+    background-color: #121227;
+    margin: -20px;
+    margin-top: 16px;
+    padding: 9px;
+}
+
+.role {
+    text-align: left;
+    font-size: 12px;
+    display: inline-block;
+    border: 1px solid;
+    padding: 4px;
+    padding-right: 8px;
+    border-radius: 17px;
+    color: #fff;
+    margin-bottom: 3px;
+}
+
+.role>div {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    margin-right: 2px;
+    display: inline-block;
+    margin-bottom: -2px;
+}
+
+.popper-role-info {
+    font-weight: 700;
+    color: white;
+    font-size: 12px;
+    margin-bottom: 5px;
+    opacity: 0.4;
+}
+
+@keyframes move {
+    from {
+        margin-left: -10px;
+        opacity: 0.7;
+    }
+    to {
+        margin-left: 0px;
+        opacity: 1;
+    }
 }

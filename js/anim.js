@@ -53,6 +53,13 @@ Aru.addUser = function(name, disc, avatar, id, status, color) { //Are we gonna u
 	userlist.appendChild(div)
 }
 
+Aru.generateUserInfo = function(avatar, name) {
+	var uname = document.getElementById('app-user-name');
+	var avatarcontainer = document.getElementById('app-user-avatar');
+	uname.innerHTML = name;
+	avatarcontainer.style.backgroundImage = "url(" + avatar + ")";
+}
+
 Aru.updateUserPresence = function(presence, id) {
 	if (document.getElementById("presence-" + id) == undefined) {
 		var div = document.createElement("div");
@@ -61,15 +68,13 @@ Aru.updateUserPresence = function(presence, id) {
 		div.id = "presence-" + id;
 		div.className = "user-presence";
 		if (presence["type"] == "rich") {
-			div.innerHTML = "In " + presence["name"] + " ⌨";
+			div.innerHTML = 'In <span style="font-weight: 700">' + presence["name"] + "</span> ⌨";
 			var presence_attrib = document.createAttribute("data-rpc");
 			presence_attrib.value = JSON.stringify(presence["rich"]);
 			div.setAttributeNode(presence_attrib); 
 		} else {
-			div.innerHTML = "In " + presence["name"]; 
+			div.innerHTML = 'In <span style="font-weight: 700">' + presence["name"] + "</span>"; 
 		}
-		
-
 		userblock.insertBefore(div, userblock.lastChild);
 	} else {
 		if (presence["method"] == "update") {
@@ -83,76 +88,75 @@ Aru.updateUserPresence = function(presence, id) {
 Aru.showUserPopper = function(id) {
 	var popper = document.getElementById("popper");
 	var reference = document.getElementById("user-" + id.toString());
-	var avatar = document.createElement("div");
-	var name = document.createElement("div");
-	var status = document.createElement("div");
+
+	var context = {
+		avatar: "",
+		name: "",
+		status: "",
+		inapp: false,
+		role_info: "NO ROLES"
+	}
 
 	if (Aru.popper != null) {
 		popper.innerHTML = "";
 		popper.style.display = "none";
+		popper.className = "";
 		Aru.popper.destroy();
 	}
 	
-	avatar.id = "popper-avatar";
-	avatar.style.backgroundImage = document.getElementById("img-" + id.toString()).style.backgroundImage;
-	name.id = "popper-name";
-	name.innerHTML = document.getElementById("name-" + id.toString()).innerHTML;
-	status.id = "popper-status";
-	status.className = document.getElementById("img-" + id.toString()).firstChild.className;
-	avatar.appendChild(status);
-	popper.appendChild(avatar);
-	popper.appendChild(name);
+	context["avatar"] = document.getElementById("img-" + id.toString()).style.backgroundImage;
+	context["name"] = document.getElementById("name-" + id.toString()).innerHTML;
+	context["status"] = document.getElementById("img-" + id.toString()).firstChild.className;
 
 	if (document.getElementById("presence-" + id) != undefined) {
 		var presence_info = document.getElementById("presence-" + id);
-		popper.appendChild(document.createElement("hr"));
-		var presence = document.createElement("div");
-		var info = document.createElement("div");
-		info.id = "popper-presence-info";
+		context["inapp"] = true;
 		if (presence_info.getAttribute("data-rpc") != undefined) {
 			var parsed = JSON.parse(presence_info.getAttribute("data-rpc"));
-			var richwrapper = document.createElement("div");
-			richwrapper.id = "popper-presence-rich-wrapper";
-			var icon = document.createElement("div");
-			var desc = document.createElement("div");
-			var title = document.createElement("div");
-			var infowrapper = document.createElement("div");
-			infowrapper.id = "popper-presence-rich-info-wrapper";
-			icon.id = "popper-presence-rich-image";
-			desc.id = "popper-presence-rich-description";
-			title.id = "popper-presence-rich-title";
-			icon.style.backgroundImage = "url(" + parsed["icon"] + ")";
-			desc.innerHTML = parsed["desc"];
-			title.innerHTML = parsed["title"];
-			info.appendChild(icon);
-			infowrapper.appendChild(title);
-			infowrapper.appendChild(desc);
-			info.appendChild(infowrapper);
+			context["appname"] = "APPLICATION";
+			context["rich"] = true;
+			context["rich-img"] = parsed["icon"];
+			context["rich-title"] = parsed["title"];
+			context["rich-desc"] = parsed["desc"];
 		} else {
-			presence.id = "popper-presence-status";
-			presence.innerHTML = presence_info.innerHTML;
-			info.appendChild(presence);
+			context["appname"] = presence_info.children[0].innerHTML;
 		}
-		popper.appendChild(info);
+	}
+
+	if (true) { //TODO
+		context["role_info"] = "NO ROLES";
+		context["roles"] = [];
 	}
 
 	popper.style.display = "block";
+	popper.className = "move";
+	var source = document.getElementById("tmpl-popper").innerHTML;
+	var template = Handlebars.compile(source);
+	popper.innerHTML += template(context);
 	Aru.popper = new Popper(reference, popper, {placement: 'left'});
 }
 
 Aru.addMessage = function(name, msg, color, channel, avatar_src, embed, id) {
 	color = color || "#E7E7E9"; //color if we use it
 	id = id || "";
-	var div = document.createElement("DIV");
-	var span = document.createElement("SPAN");
-	var time = document.createElement("SPAN");
-	var avatar = document.createElement("DIV");
-	var message = document.createElement("SPAN");
+
+	var date = new Date();
+	var humandate = (date.getHours()<10?'0':'') + date.getHours() + ":" + (date.getMinutes()<10?'0':'') + date.getMinutes();
+
+	var context = {
+		avatar: avatar_src,
+		id: id,
+		nick: name,
+		color: color,
+		time: humandate,
+		additional: "",
+		message: "",
+		embed: ""
+	}
+
 	var embedblock = Aru.createEmbed(embed);
 	var divblock = document.getElementById(channel);
 	var shouldScroll = ((divblock.scrollTop + divblock.clientHeight + 50) > divblock.scrollHeight);
-	var date = new Date();
-	var onclick = document.createAttribute("onClick");
 
 	var pings = msg.match(/@![0-9]*/g);
 	if (pings != null) {
@@ -165,49 +169,33 @@ Aru.addMessage = function(name, msg, color, channel, avatar_src, embed, id) {
 			}
 			msg = msg.replace(pings[i], '<a href="#">@' + name + "</a>");
 			if (pinged == userInfo["id"]) {
-				message.className = "pinged";
+				context["additional"] = 'class="pinged"';
 			}
-			Aru.notify(name, msg.replace(/<(?:.|\n)*?>/gm, ''), avatar_src, channel); //dumb hack since markdown always embeds it into a <p> tag
 		}
 	}
 
-	div.classList.add("chat-message");
-	span.classList.add("chat-msg-username");
-	time.classList.add("chat-msg-time");
-	avatar.classList.add("avatar");
-	onclick.value = "Aru.addPing(" + id + ");";
-	span.innerHTML = name + " ";
-	span.style.color = color;
-	span.setAttributeNode(onclick);
-	time.appendChild(document.createTextNode("Today at " + (date.getHours()<10?'0':'') + date.getHours() + ":" + (date.getMinutes()<10?'0':'') + date.getMinutes()));
-	if (avatar_src == "") {
-
-	} else {
-		avatar.style.backgroundImage = "url(" + avatar_src + ")";
-		divblock.appendChild(avatar);
-	}
-	div.appendChild(span);
-	div.appendChild(time);
-	div.appendChild(document.createElement("BR"));
 	var m = msg.split("\n");
 	m.pop();
+
 	if (m.length > 1) {
-		message.innerHTML += m.join("<br>");
+		context["message"] += m.join("<br>");
 	} else {
-		message.innerHTML += msg;
+		context["message"] += msg;
 	}
-	div.appendChild(message);
-	divblock.appendChild(div);
+
 	if(embedblock != "") {
-		divblock.appendChild(embedblock);
+		context["embed"] = embedblock;
 	}
-	var hr = document.createElement("HR");
-	hr.classList.add("hr-placeholder");
-	divblock.appendChild(hr);
+
+	var source = document.getElementById("tmpl-message").innerHTML;
+	var template = Handlebars.compile(source);
+	divblock.innerHTML += template(context);
+
 	if (channel != Aru.currentChannel) {
 		var selector = document.getElementById("channel-" + channel);
 		selector.className = "channel-new-unread";
 	}
+
 	if (shouldScroll)
 		divblock.scrollTop = divblock.scrollHeight - divblock.clientHeight;
 }
@@ -286,13 +274,13 @@ Aru.updateTyping = function () {
 	var length = currentlyTyping.length;
 
 	if (length > 3) {
-		block.innerHTML = "Several people are typing...";
+		block.innerHTML = '<span style="font-weight: 700;">Several people</span> are typing...';
 	} else if (length == 3) {
-		block.innerHTML = currentlyTyping[0]["name"] + ", " + currentlyTyping[1]["name"] + " and " + currentlyTyping[2]["name"] + " are typing...";
+		block.innerHTML = '<span style="font-weight: 700;">' + currentlyTyping[0]["name"] + "</span>, " + '<span style="font-weight: 700;">' + currentlyTyping[1]["name"] + "</span> and " + '<span style="font-weight: 700;">' + currentlyTyping[2]["name"] + "</span> are typing...";
 	} else if (length == 2) {
-		block.innerHTML = currentlyTyping[0]["name"] + " and " + currentlyTyping[1]["name"] + " are typing...";
+		block.innerHTML = '<span style="font-weight: 700;">' + currentlyTyping[0]["name"] + "</span> and " + '<span style="font-weight: 700;">' + currentlyTyping[1]["name"] + "</span> are typing...";
 	} else if (length == 1) {
-		block.innerHTML = currentlyTyping[0]["name"] + " is typing...";
+		block.innerHTML = '<span style="font-weight: 700;">' + currentlyTyping[0]["name"] + "</span> is typing...";
 	} else {
 		block.innerHTML = "";
 	}
@@ -316,56 +304,50 @@ Aru.createEmbed = function(embed) {
 		if(oembed["error"] != undefined) {
 			return "";
 		}
-		var resultembed = document.createElement("div");
-		resultembed.className = "embed";
+
+		var context = {
+			color: "",
+			title: "",
+			body: "",
+			html: ""
+		}
+
 		if (oembed["color"] == undefined) {
-			resultembed.style.borderLeft = "5px solid #4C4C66";
+			context["color"] = "#4C4C66";
 		} else {
-			resultembed.style.borderLeft = "5px solid " + oembed["color"];
+			context["color"] = oembed["color"];
 		}
 
 		if (oembed["type"] == "video") {
-			var author = document.createElement("div");
-			var subtitle = document.createElement("div");
-			var video = document.createElement("div");
-			author.className = "embed-title";
-			subtitle.className = "embed-body";
-			video.className = "embed-img";
-			author.innerHTML = oembed["author_name"] || oembed["title"] || "";
-			subtitle.innerHTML = oembed["title"];
-			video.innerHTML = oembed["html"];
-			resultembed.appendChild(author);
-			resultembed.appendChild(subtitle);
-			resultembed.appendChild(video);
+			context["title"] = oembed["author_name"] || oembed["title"] || "";
+			context["body"] = oembed["title"];
+			context["html"] = oembed["html"];
+
 		} else if (oembed["type"] == "rich") {
-			var title = document.createElement("div");
-			var desc = document.createElement("div");
 			if(oembed["html"] != undefined) {
-				var thumbnail = document.createElement("div");
-				thumbnail.innerHTML = oembed["html"];
+				context["html"] = oembed["html"];
 			} else {
-				var thumbnail = document.createElement("img");
-				thumbnail.src = oembed["thumbnail_url"];
+				context["html"] = oembed["thumbnail_url"];
 			}
-			title.className = "embed-title";
-			desc.className = "embed-body";
-			thumbnail.className = "embed-img";
-			title.innerHTML = oembed["title"] || oembed["author_name"] || "";
+
+			context["title"] = oembed["title"] || oembed["author_name"] || "";
+
 			if(oembed["description"] != undefined) {
 				var m = oembed["description"].split("\n");
 				if (m.length > 1) {
-					desc.innerHTML += m.join("<br>");
+					context["body"] += m.join("<br>");
 				} else {
-					desc.innerHTML += m;
+					context["body"] += m;
 				}
 			} else {
-				desc.innerHTML = "";
+				context["body"] = "";
 			}
-			resultembed.appendChild(title);
-			resultembed.appendChild(desc);
-			resultembed.appendChild(thumbnail);		
 		}
-		return resultembed;
+		var source = document.getElementById("tmpl-embed").innerHTML;
+		var template = Handlebars.compile(source);
+
+		return template(context);
+
 	} catch(e) {
 		console.log(e);
 		return "";
@@ -374,16 +356,4 @@ Aru.createEmbed = function(embed) {
 
 Aru.addPing = function(id) {
 	document.getElementById("chat-input").value += "@!" + id + " ";
-}
-
-Aru.notify = function(name, body, avatar, channel) {
-	if(window.Notification && Notification.permission !== "denied") {
-		Notification.requestPermission(function(status) {
-			var n = new Notification(name + " (#" + channel + ")", { 
-				body: body,
-				icon: avatar
-			});
-			setTimeout(function() { n.close(); }, 2000);
-		});
-	}
 }

@@ -1,0 +1,7 @@
+<div class="embed" style="border-left: 5px solid {{ color }}">
+	<div class="embed-title">{{ title }}</div>
+	<div class="embed-body">{{{ body }}}</div>
+	<div class="embed-img">
+		{{{ html }}}
+	</div>
+</div>

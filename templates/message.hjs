@@ -1,0 +1,8 @@
+<div class="avatar" style="background-image: url({{ avatar }});"></div>
+<div class="chat-message">
+	<span class="chat-msg-username" style="color: {{ color }}" onclick="Aru.addPing({{ id }});">{{ nick }} <span class="chat-msg-time">Today at {{ time }}</span></span>
+	<br>
+	<span {{{ additional }}}>{{{ message }}}</span>
+</div>
+{{{ embed }}}
+<hr class="hr-placeholder">

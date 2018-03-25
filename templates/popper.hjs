@@ -1,0 +1,26 @@
+<div id="popper-avatar" style="background-image: {{ avatar }}">
+	<div id="popper-status" class="{{ status }}"></div>
+</div>
+<div id="popper-name">{{{ name }}}</div>
+	{{#if inapp}}
+	<div id="popper-game-info">
+		<div id="popper-game-status">IN {{ appname }}</div>
+		{{#if rich}}
+		<div id="popper-game-rich-wrapper">
+			<div id="popper-game-rich-image" style="background-image: url({{ rich-img }});"></div>
+			<div style="display: inline-block; margin-top: 20px; margin-left: 5px;">
+				<div id="popper-game-rich-title">{{ rich-title }}</div>
+				<div id="popper-game-rich-description">{{{ rich-desc }}}</div>
+			</div>
+		</div>
+		{{/if}}
+	</div>
+	{{/if}}
+</div>
+<div id="popper-role-wrapper">
+	<div class="popper-role-info">{{ role_info }}</div>
+	{{#each roles}}
+	<div class="role" style="border-color: {{ role-color }};"><div style="background-color: {{ role-color }};"></div> {{ role-name }}</div>
+	{{/each}}
+</div>
+<br>

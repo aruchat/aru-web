@@ -5,6 +5,20 @@ var timeSinceLastOnTyping = 0;
 var currentlyTyping = [];
 var unreadMsg = 0;
 
+function loadTemplate(template) {
+  fetch("templates/" + template + ".hjs").then(function(data){
+    return data.text();
+  }).then(function(ret) {
+    var tag = document.createElement("script");
+    tag.id = "tmpl-" + template;
+    tag.type = "text/x-handlebars-template";
+    tag.innerHTML = ret;
+    document.querySelector("head").appendChild(tag);
+  }).catch(function(err){
+    alert(err);
+  });
+}
+
 function checkPageFocus() {
   if ( document.hasFocus() ) {
     userInfo["focus"] = true;
@@ -16,6 +30,9 @@ function checkPageFocus() {
 }
 
 window.onload = function() {
+  loadTemplate("message");
+  loadTemplate("embed");
+  loadTemplate("popper");
   if(window.process) {
     document.getElementById("controls").style.display = "inline-block";
   } else {
@@ -45,6 +62,7 @@ function beginConnection() {
     var channelrequest = msgpack.encode({"type": "req", "req": "channellist"});
     ws.send(userrequest);
     ws.send(channelrequest);
+    Notification.requestPermission();
   };
 
   ws.onmessage = function(msg) {
@@ -74,6 +92,7 @@ function beginConnection() {
         if (isFirstUserjoin) {
           isFirstUserjoin = false; // Workaround since first user-join event (you joining) is also sent to you
           userInfo = {"name": frame["name"], "id": frame["id"], "avatar": frame["avatar"]};
+          /*Aru.generateUserInfo(frame["avatar"], frame["name"] + "#" + frame["discriminator"]);*/
         } else {
           Aru.addUser(frame["name"], frame["discriminator"], frame["avatar"], frame["id"], frame["status"], "#E7E7E9");
         }
